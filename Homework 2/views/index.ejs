@@ -9,6 +9,7 @@
   <body>
     <div class="info">
       <h1><%=user.name%></h1>
+      <img src="<%= user.link %>" alt="" />
       <ul>
         <% user.interests.forEach(function(interest){ %>
         <li><%=interest%></li>
