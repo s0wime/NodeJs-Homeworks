@@ -6,16 +6,20 @@ class GuestRepository {
   getAllGames() {
     return games;
   }
-  getGameByID(id) {
-    return games.find((game) => game.id === id);
+
+  getGamesByID(id) {
+    return games.filter((game) => game.id === id);
   }
+
   getGamesByTeamName(name) {
-    const teamsByName = teams.find((team) => team.name === name);
-    const games = [];
-    teamsByName.forEach((team) => {
-      games.push(this.getGameByID(team.id));
-    });
-    return { games, teamsByName };
+    const team = teams.find((team) => team.name === name);
+
+    if (!team) {
+      return { false: false };
+    }
+
+    const games = this.getGamesByID(team.id);
+    return { games, team };
   }
 }
 
