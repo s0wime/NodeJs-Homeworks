@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%=user.name%></title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/styles/style.css" />
+  </head>
+  <body>
+    <div class="profile">
+      <h1 class="profile-name"><%=user.name%></h1>
+      <img class="profile-image" src="<%= user.link %>" alt="" />
+      <ul class="profile-interests">
+        <% user.interests.forEach(function(interest){ %>
+        <li class="interests-item"><%=interest%></li>
+        <% }); %>
+      </ul>
+    </div>
+    <a class="btn" href="http://localhost:3000/getHTML">Home</a>
+  </body>
+</html>

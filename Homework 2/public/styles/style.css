@@ -1,0 +1,126 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: "Rubik", sans-serif;
+  font-weight: 400;
+  font-size: 62.5%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  /* gap: 80px; */
+  height: 100vh;
+  color: #e9ecef;
+  background-image: linear-gradient(
+    to right top,
+    #051937,
+    #004d7a,
+    #008793,
+    #00bf72,
+    #a8eb12
+  );
+}
+
+.profile {
+  display: flex;
+  padding: 4.8rem 3.6rem;
+  border-radius: 1rem;
+  gap: 2.4rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  background-color: hwb(0 100% 0% / 0.8);
+}
+
+.profile-name {
+  font-size: 4.8rem;
+  font-weight: 700;
+  color: #212529;
+}
+
+.profile-image {
+  border-radius: 1rem;
+  width: 32rem;
+}
+
+.profile-interests {
+  font-size: 1.8rem;
+  color: #495057;
+}
+
+.profile-interests {
+  display: flex;
+  gap: 1rem;
+  list-style: none;
+}
+
+.about {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.4rem;
+}
+
+.greeting {
+  font-size: 4.8rem;
+}
+
+.about-text {
+  font-size: 1.8rem;
+  color: #dee2e6;
+}
+
+.navigation {
+  display: flex;
+  gap: 1.2rem;
+}
+
+.repo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  color: #ced4da;
+}
+
+.btn:link,
+.btn:visited {
+  font-size: 1.8rem;
+  color: #e9ecef;
+  text-decoration: none;
+  transition: all 0.5s;
+}
+
+.btn:hover,
+.btn:active {
+  color: #adb5bd;
+}
+
+.btn--main-page:link,
+.btn--main-page:visited {
+  border-bottom: 0.1rem #e9ecef solid;
+}
+
+.btn--main-page:hover,
+.btn--main-page:active {
+  border-bottom: none;
+}
+
+.repo-link:link,
+.repo-link:visited {
+  font-size: 1.2rem;
+  color: #ced4da;
+}
+
+.repo-link:hover,
+.repo-link:active {
+  color: #adb5bd;
+}
