@@ -1,4 +1,4 @@
-const guestRouter = require("./controllers/guest");
+const guestRouter = require("./src/controllers/guest");
 
 const path = require("path");
 const express = require("express");
@@ -9,7 +9,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/guest", guestRouter);
 
-app.set("views", path.join(__dirname, "views"));
+app.set("views", path.join(__dirname, "src/views"));
 app.set("view engine", "ejs");
 
 app.listen(port, "localhost", () => {

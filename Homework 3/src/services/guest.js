@@ -3,7 +3,8 @@ const guestRepository = new GuestRepositoryClass();
 
 class GuestService {
   getSchedule(req, res) {
-    res.send(guestRepository.getAllGames());
+    const schedule = guestRepository.getAllGames();
+    res.render("schedule", { schedule });
   }
 
   getGameByTeam(req, res) {
@@ -18,7 +19,7 @@ class GuestService {
       return res.send("This team does not have games.");
     }
 
-    res.send({ games: result.games, team: result.team });
+    // res.render("schedule", { games: result.games, team: result.team });
   }
 }
 
