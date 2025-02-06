@@ -3,9 +3,9 @@ const games = require("../data/games");
 const results = require("../data/results");
 
 class GuestRepository {
-  getAllGames() {
+  getGames(currentGames = games) {
     const fullSchedule = [];
-    for (const game of games) {
+    for (const game of currentGames) {
       const { team1Name, team2Name } = this.getTeamsByGameID(game.id);
       fullSchedule.push({
         gameId: game.id,
@@ -27,8 +27,13 @@ class GuestRepository {
     return { team1Name: team1.name, team2Name: team2.name };
   }
 
-  getGamesByID(id) {
-    return games.filter((game) => game.id === id);
+  getGamesByTeamID(id) {
+    const temp = games.filter(
+      (game) => game.team1_id === id || game.team2_id === id
+    );
+    console.log(games);
+    console.log(temp);
+    return temp;
   }
 
   getGamesByTeamName(name) {
@@ -38,8 +43,9 @@ class GuestRepository {
       return null;
     }
 
-    const games = this.getGamesByID(team.id);
-    return { games, team };
+    const games = this.getGamesByTeamID(team.id);
+    const schedule = this.getGames(games);
+    return schedule;
   }
 }
 

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Schedule</title>
+    <link rel="stylesheet" href="/styles/scheduleStyle.css" />
+  </head>
+  <body>
+    <header>
+      <form action="/guest/viewSchedule/" class="form-game-finder">
+        <input
+          type="text"
+          name="teamName"
+          placeholder="Enter team name"
+          class="game-finder"
+          required
+        />
+        <button type="submit">Search</button>
+      </form>
+    </header>
+    <main><%- include('schedule'); -%></main>
+    <footer>
+      <p>
+        Нікіта директор спортзалу зі змаганнями, всі питання за тел.: +380...
+      </p>
+    </footer>
+  </body>
+</html>
