@@ -3,7 +3,7 @@ const games = require("../data/games");
 const results = require("../data/results");
 
 class GuestRepository {
-  getGames(currentGames = games) {
+  transformGames(currentGames = games) {
     const fullSchedule = [];
     for (const game of currentGames) {
       const { team1Name, team2Name } = this.getTeamsByGameID(game.id);
@@ -28,12 +28,7 @@ class GuestRepository {
   }
 
   getGamesByTeamID(id) {
-    const temp = games.filter(
-      (game) => game.team1_id === id || game.team2_id === id
-    );
-    console.log(games);
-    console.log(temp);
-    return temp;
+    return games.filter((game) => game.team1_id === id || game.team2_id === id);
   }
 
   getGamesByTeamName(name) {
@@ -44,8 +39,7 @@ class GuestRepository {
     }
 
     const games = this.getGamesByTeamID(team.id);
-    const schedule = this.getGames(games);
-    return schedule;
+    return this.transformGames(games);
   }
 }
 
