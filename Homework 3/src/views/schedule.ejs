@@ -1,7 +1,10 @@
 <ul class="schedule">
   <% schedule.forEach((game) => { %>
   <li class="game">
-    <h3 class="game-teams"><%= game.team1Name %> VS <%= game.team2Name %></h3>
+    <h3 class="game-teams">
+      <%= game.team1Name %> <% if (game.team1Score) { %> <%= game.team1Score %>
+      - <%= game.team2Score %> <% } else { %> VS <% } %> <%= game.team2Name %>
+    </h3>
     <p class="game-date"><%= game.date %></p>
   </li>
   <% }) %>

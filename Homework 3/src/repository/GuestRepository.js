@@ -7,14 +7,30 @@ class GuestRepository {
     const fullSchedule = [];
     for (const game of currentGames) {
       const { team1Name, team2Name } = this.getTeamsByGameID(game.id);
+      const results = this.getResultByGameID(game.id);
       fullSchedule.push({
         gameId: game.id,
         date: game.date,
         team1Name: team1Name,
         team2Name: team2Name,
+        team1Score: results?.score1,
+        team2Score: results?.score2,
       });
     }
-    return fullSchedule;
+    return fullSchedule.sort((a, b) => {
+      return (
+        this.convertTimestampToNumber(a.date) -
+        this.convertTimestampToNumber(b.date)
+      );
+    });
+  }
+
+  convertTimestampToNumber(timestamp) {
+    return new Date(timestamp).getTime();
+  }
+
+  getResultByGameID(id) {
+    return results.find((result) => result.game_id === id);
   }
 
   getTeamsByGameID(id) {
