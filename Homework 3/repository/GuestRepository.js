@@ -15,7 +15,7 @@ class GuestRepository {
     const team = teams.find((team) => team.name === name);
 
     if (!team) {
-      return { false: false };
+      return null;
     }
 
     const games = this.getGamesByID(team.id);
