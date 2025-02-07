@@ -120,6 +120,18 @@ main {
   text-align: center;
 }
 
+.hidden {
+  display: none;
+}
+
+.btn--confirm-editing {
+  background-color: #51cf66;
+}
+
+.btn--confirm-editing:hover {
+  background-color: #37b24d;
+}
+
 footer {
   background-color: var(--secondary-color);
   padding: 2rem;
