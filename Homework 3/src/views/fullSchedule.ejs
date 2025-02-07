@@ -10,10 +10,11 @@
     <header>
       <div class="header-tools">
         <% if (group === "admin") {%>
-        <button class="btn btn--add-game">
-          <ion-icon name="add-outline"></ion-icon>
-        </button>
+          <a href="/admin/addGame" class="btn btn--add-game">
+            <ion-icon name="add-outline"></ion-icon>
+          </a>
         <%} %>
+
         <form action="/<%= group %>/viewSchedule/" class="form-game-finder">
           <input
             type="text"

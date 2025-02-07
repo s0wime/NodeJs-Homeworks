@@ -20,6 +20,17 @@ class AdminService {
     res.render("fullSchedule", { schedule: result, group: "admin" })
   }
 
+  getAddPage(req, res) {
+    const teams = adminRepository.getTeams();
+    res.render('modal', {teams});
+  }
+
+  addGame(req, res) {
+    console.log(req.body.team1)
+    console.log(req.body.team2)
+    res.send('all ok');
+  }
+
   deleteGame(req, res) {
     const { gameId } = req.params;
     adminRepository.deleteGame(parseInt(gameId));

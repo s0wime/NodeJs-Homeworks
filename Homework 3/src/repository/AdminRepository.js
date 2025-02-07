@@ -16,6 +16,10 @@ class AdminRepository extends GuestRepository {
     });
   }
 
+  getTeams() {
+    return teams;
+  }
+
   getTeamByName(name) {
     return teams.find((team) => team.name === name);
   }
