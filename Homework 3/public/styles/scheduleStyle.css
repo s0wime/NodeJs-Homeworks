@@ -33,10 +33,16 @@ header {
   backdrop-filter: blur(10px);
 }
 
-.form-game-finder {
+.header-tools {
   max-width: 600px;
   margin: 0 auto;
   display: flex;
+  gap: 1rem;
+}
+
+.form-game-finder {
+  display: flex;
+  flex: 1;
   gap: 1rem;
 }
 
@@ -124,11 +130,19 @@ main {
   display: none;
 }
 
-.btn--confirm-editing {
+.btn--delete-game {
+  background-color: #ff6b6b;
+}
+
+.btn--delete-game:hover {
+  background-color: #fa5252;
+}
+
+.btn--add-game {
   background-color: #51cf66;
 }
 
-.btn--confirm-editing:hover {
+.btn--add-game:hover {
   background-color: #37b24d;
 }
 

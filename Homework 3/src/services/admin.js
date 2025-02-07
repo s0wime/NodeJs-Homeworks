@@ -19,6 +19,11 @@ class AdminService {
 
     res.render("fullSchedule", { schedule: result, group: "admin" });
   }
+
+  deleteGame(req, res) {
+    const { gameId } = req.query;
+    adminRepository.deleteGame(gameId);
+  }
 }
 
 module.exports = AdminService;

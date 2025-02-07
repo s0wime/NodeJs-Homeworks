@@ -4,12 +4,17 @@ const results = require("../data/results");
 const GuestRepository = require("./GuestRepository");
 
 class AdminRepository extends GuestRepository {
-  printHelloWorld() {
-    return "Hello World";
-  }
-
   getGameByID(id) {
     return games.find((game) => game.id === id);
+  }
+
+  deleteGame(id) {
+    games.forEach((game) => {
+      if (game.id === id) {
+        games.splice(games.indexOf(game), 0);
+      }
+    });
+    console.log(games.length);
   }
 
   getTeamByName(name) {

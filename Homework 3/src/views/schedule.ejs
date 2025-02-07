@@ -1,6 +1,11 @@
 <ul class="schedule">
   <% schedule.forEach((game) => { %>
   <li class="game">
+    <% if (group === "admin") {%>
+    <button class="btn btn--delete-game" data-game-id="<%= game.gameId %>">
+      <ion-icon name="close-outline"></ion-icon>
+    </button>
+    <%} %>
     <div class="game-info">
       <h3 class="game-teams">
         <%= game.team1Name %> <% if (game.team1Score) { %> <%= game.team1Score
@@ -12,9 +17,6 @@
     <% if (group === "admin") {%>
     <button class="btn btn--edit-game">
       <ion-icon name="create-outline"></ion-icon>
-    </button>
-    <button class="btn btn--confirm-editing hidden">
-      <ion-icon name="checkmark-outline"></ion-icon>
     </button>
     <%} %>
   </li>

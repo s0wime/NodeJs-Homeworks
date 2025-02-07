@@ -8,24 +8,31 @@
   </head>
   <body>
     <header>
-      <form action="/<%= group %>/viewSchedule/" class="form-game-finder">
-        <input
-          type="text"
-          name="teamName"
-          placeholder="Enter team name"
-          class="game-finder"
-          required
-        />
-        <button class="btn btn--search" type="submit">Search</button>
-      </form>
+      <div class="header-tools">
+        <% if (group === "admin") {%>
+        <button class="btn btn--add-game">
+          <ion-icon name="add-outline"></ion-icon>
+        </button>
+        <%} %>
+        <form action="/<%= group %>/viewSchedule/" class="form-game-finder">
+          <input
+            type="text"
+            name="teamName"
+            placeholder="Enter team name"
+            class="game-finder"
+            required
+          />
+          <button class="btn btn--search" type="submit">Search</button>
+        </form>
+      </div>
     </header>
     <main><%- include('schedule'); -%></main>
     <footer>
       <p>
-        Нікіта директор спортзалу зі змаганнями, всі питання за тел.: +380...
+        All information about games is the responsibility of the administrator.
       </p>
     </footer>
-    <script src="/scripts/viewSchedule.js"></script>
+    <script src="/scripts/editSchedule.js"></script>
     <script
       type="module"
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
