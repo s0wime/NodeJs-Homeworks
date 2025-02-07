@@ -7,7 +7,7 @@ class GuestService {
 
     if (!teamName) {
       const schedule = guestRepository.transformGames();
-      return res.render("fullSchedule", { schedule });
+      return res.render("fullSchedule", { schedule, group: "guest" });
     }
 
     const result = guestRepository.getGamesByTeamName(teamName);
@@ -16,7 +16,7 @@ class GuestService {
       return res.render("errorPage", { errMsg: "There is no such team." });
     }
 
-    res.render("fullSchedule", { schedule: result });
+    res.render("fullSchedule", { schedule: result, group: "guest" });
   }
 }
 

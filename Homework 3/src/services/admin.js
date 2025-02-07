@@ -1,7 +1,13 @@
+const AdminRepository = require("../repository/AdminRepository");
 const AdminRepositoryClass = require("../repository/AdminRepository");
 const adminRepository = new AdminRepositoryClass();
 
 class AdminService {
+  viewSchedule(req, res) {
+    const schedule = adminRepository.transformGames();
+    res.render("fullSchedule", { schedule, group: "admin" });
+  }
+
   renderHelloWorld(req, res) {
     res.send(adminRepository.printHelloWorld());
   }

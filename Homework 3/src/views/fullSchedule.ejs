@@ -8,7 +8,7 @@
   </head>
   <body>
     <header>
-      <form action="/guest/viewSchedule/" class="form-game-finder">
+      <form action="/<%= group %>/viewSchedule/" class="form-game-finder">
         <input
           type="text"
           name="teamName"
@@ -16,7 +16,7 @@
           class="game-finder"
           required
         />
-        <button type="submit">Search</button>
+        <button class="btn btn--search" type="submit">Search</button>
       </form>
     </header>
     <main><%- include('schedule'); -%></main>
@@ -25,5 +25,14 @@
         Нікіта директор спортзалу зі змаганнями, всі питання за тел.: +380...
       </p>
     </footer>
+    <script src="/scripts/viewSchedule.js"></script>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
   </body>
 </html>

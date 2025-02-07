@@ -1,8 +1,9 @@
 const teams = require("../data/teams");
 const games = require("../data/games");
 const results = require("../data/results");
+const GuestRepository = require("./GuestRepository");
 
-class AdminRepository {
+class AdminRepository extends GuestRepository {
   printHelloWorld() {
     return "Hello World";
   }
