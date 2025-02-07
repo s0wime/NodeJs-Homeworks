@@ -13,7 +13,7 @@
   "license": "ISC",
   "author": "",
   "type": "commonjs",
-  "main": "index.js",
+  "main": "Homework 3/src/index.js",
   "scripts": {
     "hw1": "node './Homework 1/index.js'",
     "hw2": "nodemon './Homework 2/index.js'",

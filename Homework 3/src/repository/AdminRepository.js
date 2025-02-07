@@ -11,10 +11,9 @@ class AdminRepository extends GuestRepository {
   deleteGame(id) {
     games.forEach((game) => {
       if (game.id === id) {
-        games.splice(games.indexOf(game), 0);
+        games.splice(games.indexOf(game), 1);
       }
     });
-    console.log(games.length);
   }
 
   getTeamByName(name) {
