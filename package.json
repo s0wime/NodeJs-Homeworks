@@ -17,7 +17,7 @@
   "scripts": {
     "hw1": "node './Homework 1/index.js'",
     "hw2": "nodemon './Homework 2/index.js'",
-    "hw3": "nodemon './Homework 3/index.js'"
+    "hw3": "nodemon './Homework 3/src/index.js'"
   },
   "dependencies": {
     "body-parser": "^1.20.3",
