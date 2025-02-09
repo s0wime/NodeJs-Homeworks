@@ -8,7 +8,16 @@ class AdminRepository extends GuestRepository {
     return games.find((game) => game.id === id);
   }
 
+  deleteResult(gameId) {
+    results.forEach((result) => {
+      if (result.game_id === gameId) {
+        results.splice(results.indexOf(result), 1);
+      }
+    });
+  }
+
   deleteGame(id) {
+    this.deleteResult(id);
     games.forEach((game) => {
       if (game.id === id) {
         games.splice(games.indexOf(game), 1);
