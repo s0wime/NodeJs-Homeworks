@@ -17,24 +17,23 @@ class AdminService {
       return res.render("errorPage", { errMsg: "There is no such team." });
     }
 
-    res.render("fullSchedule", { schedule: result, group: "admin" })
+    res.render("fullSchedule", { schedule: result, group: "admin" });
   }
 
   getAddPage(req, res) {
     const teams = adminRepository.getTeams();
-    res.render('modal', {teams});
+    res.render("modal", { teams });
   }
 
   addGame(req, res) {
-    console.log(req.body.team1)
-    console.log(req.body.team2)
-    res.send('all ok');
+    const { body } = req;
+    adminRepository.addGame(body);
   }
 
   deleteGame(req, res) {
     const { gameId } = req.params;
     adminRepository.deleteGame(parseInt(gameId));
-    res.status(200).send({message: 'ok'})
+    res.status(200).send({ message: "ok" });
   }
 }
 

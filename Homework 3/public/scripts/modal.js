@@ -1,9 +1,5 @@
-console.log(teams);
-
 const elSelectTeam1 = document.getElementById("team1");
 const elSelectTeam2 = document.getElementById("team2");
-
-console.log(elSelectTeam1.options);
 
 function fillSelect(select, exclude = null) {
   const currentOption = select.value;
