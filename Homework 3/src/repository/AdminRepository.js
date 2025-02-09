@@ -2,6 +2,7 @@ const teams = require("../data/teams");
 const games = require("../data/games");
 const results = require("../data/results");
 const GuestRepository = require("./GuestRepository");
+// const LIMIT_YEARS = 3;
 
 class AdminRepository extends GuestRepository {
   getGameByID(id) {
@@ -39,6 +40,9 @@ class AdminRepository extends GuestRepository {
     if (team1Name === team2Name) {
       return;
     }
+
+    //validate date from frontend
+    // if(date )
 
     const team1ID = this.getTeamByName(team1Name).id;
     const team2ID = this.getTeamByName(team2Name).id;

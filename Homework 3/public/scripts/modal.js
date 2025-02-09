@@ -1,5 +1,7 @@
 const elSelectTeam1 = document.getElementById("team1");
 const elSelectTeam2 = document.getElementById("team2");
+const dateInput = document.getElementById("date");
+// const YEARS_LIMIT = 3;
 
 function fillSelect(select, exclude = null) {
   const currentOption = select.value;
@@ -34,3 +36,14 @@ elSelectTeam2.addEventListener("change", () => {
 });
 
 initSelects();
+
+const now = new Date();
+const yearsLater = new Date();
+yearsLater.setFullYear(now.getFullYear() + 3);
+
+function convertDateToString(date) {
+  return date.toISOString().slice(0, 16);
+}
+
+dateInput.min = convertDateToString(now);
+dateInput.max = convertDateToString(yearsLater);
