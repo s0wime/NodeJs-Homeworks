@@ -1,4 +1,3 @@
-const AdminRepository = require("../repository/AdminRepository");
 const AdminRepositoryClass = require("../repository/AdminRepository");
 const adminRepository = new AdminRepositoryClass();
 
@@ -28,6 +27,7 @@ class AdminService {
   addGame(req, res) {
     const { body } = req;
     adminRepository.addGame(body);
+    res.redirect("viewSchedule/");
   }
 
   deleteGame(req, res) {
