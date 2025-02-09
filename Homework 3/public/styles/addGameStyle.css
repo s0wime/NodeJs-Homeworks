@@ -1,0 +1,106 @@
+:root {
+    --main-color: #ffbb98;
+    --secondary-color: #fbe0c3;
+    --background-color: #f8f9fa;
+    --text-color: #344648;
+    --border-color: #7d8e95;
+    --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--background-color);
+    box-shadow: var(--shadow);
+    border: 2px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 2rem;
+    width: 90%;
+    max-width: 600px;
+}
+
+.modal form {
+    display: flex;
+    flex-direction: column;
+}
+
+.teams-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.team-select {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.vs {
+    font-size: 1.75rem;
+    font-weight: bold;
+    margin: 0 1rem;
+}
+
+.modal label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.modal select, .modal input {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    transition: background-color 0.2s ease;
+    border-radius: 0.5rem;
+}
+
+.modal select:focus, .modal input:focus {
+    border-color: var(--main-color);
+}
+
+.modal button {
+    width: 100%;
+    background-color: var(--main-color);
+    color: var(--text-color);
+    padding: 0.75rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.modal button:hover {
+    background-color: #f0a986;
+}
