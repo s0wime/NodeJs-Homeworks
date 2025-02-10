@@ -65,7 +65,7 @@ class AdminService {
       updatedGame.date = date;
     }
 
-    if (team1Score && team2Score) {
+    if (!isNaN(team1Score) && !isNaN(team2Score)) {
       updatedResult.score1 = team1Score;
       updatedResult.score2 = team2Score;
     }

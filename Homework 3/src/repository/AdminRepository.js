@@ -63,6 +63,15 @@ class AdminRepository extends GuestRepository {
     games.push(newGame);
   }
 
+  addResult(gameId, result) {
+    results.push({
+      id: results[results.length - 1]?.id + 1 || 1,
+      game_id: gameId,
+      score1: result.score1,
+      score2: result.score2,
+    });
+  }
+
   updateGame(values) {
     const { gameId, updatedGame, updatedResult } = values;
     const resultId = this.getResultByGameID(gameId)?.id;
@@ -76,6 +85,8 @@ class AdminRepository extends GuestRepository {
     const resultIndex = results.findIndex((result) => result.id === resultId);
     if (resultIndex !== -1) {
       results[resultIndex] = { ...results[resultIndex], ...updatedResult };
+    } else {
+      this.addResult(gameId, updatedResult);
     }
   }
 }

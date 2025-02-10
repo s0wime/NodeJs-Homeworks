@@ -71,6 +71,8 @@ function validateAttributes() {
     elSelectTeam2.disabled = true;
     dateInput.disabled = true;
   }
+
+  team1ScoreInput.min = team2ScoreInput.min = 0;
 }
 
 initSelects();
