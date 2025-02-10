@@ -51,10 +51,6 @@ elSelectTeam2.addEventListener("change", () => {
   fillSelect(elSelectTeam1, elSelectTeam2.value);
 });
 
-initSelects();
-initScores();
-initDate();
-
 const now = new Date();
 const yearsLater = new Date();
 yearsLater.setFullYear(now.getFullYear() + 3);
@@ -66,12 +62,29 @@ function convertDateToString(date) {
 dateInput.min = convertDateToString(now);
 dateInput.max = convertDateToString(yearsLater);
 
+function validateAttributes() {
+  if (new Date(dateInput.value).getTime() > now.getTime()) {
+    team1ScoreInput.disabled = true;
+    team2ScoreInput.disabled = true;
+  } else {
+    elSelectTeam1.disabled = true;
+    elSelectTeam2.disabled = true;
+    dateInput.disabled = true;
+  }
+}
+
+initSelects();
+initScores();
+initDate();
+validateAttributes();
+
 elForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const formData = new FormData(e.target);
   const data = Object.fromEntries(formData.entries());
   data.team1Score = parseInt(data.team1Score);
   data.team2Score = parseInt(data.team2Score);
+  data.gameId = game.id;
 
   const options = {
     method: "PATCH",
@@ -81,5 +94,7 @@ elForm.addEventListener("submit", (e) => {
     },
   };
 
-  fetch("http://localhost:3000/admin/editGame/", options);
+  fetch("http://localhost:3000/admin/editGame/", options).then(() => {
+    window.location.href = "/admin/viewSchedule/";
+  });
 });

@@ -42,10 +42,37 @@ class AdminService {
   }
 
   editGame(req, res) {
-    const { body } = req;
-    res.send("all ok");
+    const {
+      body: { gameId, team1Name, team2Name, team1Score, team2Score, date },
+    } = req;
 
-    console.log(body);
+    const updatedGame = {};
+    const updatedResult = {};
+
+    const team1Id = team1Name
+      ? adminRepository.getTeamByName(team1Name).id
+      : "";
+    const team2Id = team2Name
+      ? adminRepository.getTeamByName(team2Name).id
+      : "";
+
+    if (team1Id && team2Id) {
+      updatedGame.team1_id = team1Id;
+      updatedGame.team2_id = team2Id;
+    }
+
+    if (date) {
+      updatedGame.date = date;
+    }
+
+    if (team1Score && team2Score) {
+      updatedResult.score1 = team1Score;
+      updatedResult.score2 = team2Score;
+    }
+
+    adminRepository.updateGame({ gameId, updatedGame, updatedResult });
+
+    return res.send("all ok");
   }
 
   deleteGame(req, res) {

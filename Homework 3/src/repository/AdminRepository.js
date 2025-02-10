@@ -62,6 +62,22 @@ class AdminRepository extends GuestRepository {
 
     games.push(newGame);
   }
+
+  updateGame(values) {
+    const { gameId, updatedGame, updatedResult } = values;
+    const resultId = this.getResultByGameID(gameId)?.id;
+
+    const gameIndex = games.findIndex((game) => game.id === gameId);
+    if (gameIndex === -1) {
+      return;
+    }
+    games[gameIndex] = { ...games[gameIndex], ...updatedGame };
+
+    const resultIndex = results.findIndex((result) => result.id === resultId);
+    if (resultIndex !== -1) {
+      results[resultIndex] = { ...results[resultIndex], ...updatedResult };
+    }
+  }
 }
 
 module.exports = AdminRepository;
