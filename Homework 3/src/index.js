@@ -3,13 +3,14 @@ const adminRouter = require("./controllers/admin");
 
 const path = require("path");
 const express = require("express");
-const bodyParses = require("body-parser");
+const bodyParser = require("body-parser");
 const app = express();
 const port = 3000;
 
 app.use(express.static(path.join(__dirname, "../public")));
 
-app.use(bodyParses.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 
 app.use("/guest", guestRouter);
 app.use("/admin", adminRouter);

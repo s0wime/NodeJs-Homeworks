@@ -30,7 +30,7 @@ class GuestRepository {
   }
 
   getResultByGameID(id) {
-    return results.find((result) => result.game_id === id);
+    return results.find((result) => result.game_id === id) || "";
   }
 
   getTeamsByGameID(id) {

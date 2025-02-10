@@ -21,7 +21,7 @@ class AdminService {
 
   getAddPage(req, res) {
     const teams = adminRepository.getTeams();
-    res.render("modal", { teams });
+    res.render("addGame", { teams });
   }
 
   addGame(req, res) {
@@ -30,9 +30,36 @@ class AdminService {
     res.redirect("viewSchedule/");
   }
 
+  getEditingPage(req, res) {
+    const {
+      query: { gameId },
+    } = req;
+    const game = adminRepository.getGameByID(parseInt(gameId));
+    const teams = adminRepository.getTeams();
+    const result = adminRepository.getResultByGameID(parseInt(gameId));
+
+    res.render("editGame", { game, teams, result });
+  }
+
+  editGame(req, res) {
+    const { body } = req;
+    res.send("all ok");
+
+    console.log(body);
+  }
+
   deleteGame(req, res) {
-    const { gameId } = req.params;
-    adminRepository.deleteGame(parseInt(gameId));
+    const {
+      params: { gameId },
+    } = req;
+
+    const parsedGameId = parseInt(gameId);
+
+    if (isNaN(parsedGameId)) {
+      return res.render("errorPage", { errMsg: "There is no such game." });
+    }
+
+    adminRepository.deleteGame(parsedGameId);
     res.status(200).send({ message: "ok" });
   }
 }
