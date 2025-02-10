@@ -18,6 +18,14 @@ app.use("/admin", adminRouter);
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
+app.get("/", (req, res) => {
+  res.render("mainPage");
+});
+
+app.use("*", (req, res) => {
+  res.status(404).render("errorPage", { errMsg: "Bad request." });
+});
+
 app.listen(port, "localhost", () => {
   console.log(`http://localhost:${port}`);
 });
