@@ -9,10 +9,13 @@
   <body>
     <header>
       <div class="header-tools">
+        <a href="/" class="btn btn--back"
+          ><ion-icon name="arrow-back-outline"></ion-icon
+        ></a>
         <% if (group === "admin") {%>
-          <a href="/admin/addGame" class="btn btn--add-game">
-            <ion-icon name="add-outline"></ion-icon>
-          </a>
+        <a href="/admin/addGame" class="btn btn--add-game">
+          <ion-icon name="add-outline"></ion-icon>
+        </a>
         <%} %>
 
         <form action="/<%= group %>/viewSchedule/" class="form-game-finder">
