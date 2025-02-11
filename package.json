@@ -1,0 +1,33 @@
+{
+  "name": "nodejs-homeworks",
+  "version": "1.0.0",
+  "description": "This repository contains Node.js homework assignments.",
+  "homepage": "https://github.com/s0wime/NodeJs-Homeworks#readme",
+  "bugs": {
+    "url": "https://github.com/s0wime/NodeJs-Homeworks/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/s0wime/NodeJs-Homeworks.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "Homework 3/src/index.js",
+  "scripts": {
+    "hw1": "node './Homework 1/index.js'",
+    "hw2": "nodemon './Homework 2/index.js'",
+    "hw3": "nodemon './Homework 3/src/index.js'"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "*.json"
+    ]
+  },
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "nodemon": "^3.1.9"
+  }
+}
