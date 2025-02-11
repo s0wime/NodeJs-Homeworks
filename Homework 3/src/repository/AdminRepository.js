@@ -51,8 +51,55 @@ class AdminRepository extends GuestRepository {
       });
   }
 
+  async updateGameAsyncAwait(game, result) {
+    try {
+      const data = await fsPromises.readFile(
+        path.join(__dirname, "../data/games.json"),
+        "utf-8"
+      );
+      const parsedData = JSON.parse(data);
+      const indexOfGame = parsedData.findIndex(
+        (currentGame) => currentGame.id === game.id
+      );
+      if (indexOfGame === -1) {
+        return;
+      }
+      parsedData[indexOfGame] = { ...parsedData[indexOfGame], ...game };
+
+      await fsPromises.writeFile(
+        path.join(__dirname, "../data/games.json"),
+        JSON.stringify(parsedData)
+      );
+
+      const resultsData = await fsPromises.readFile(
+        path.join(__dirname, "../data/results.json"),
+        "utf-8"
+      );
+
+      const parsedResultsData = JSON.parse(resultsData);
+      const indexOfResult = parsedResultsData.findIndex(
+        (currentResult) => currentResult.id === result.id
+      );
+      if (indexOfResult === -1) {
+        parsedResultsData.push(result);
+      } else {
+        parsedResultsData[indexOfResult] = {
+          ...parsedResultsData[indexOfResult],
+          ...result,
+        };
+      }
+
+      await fsPromises.writeFile(
+        path.join(__dirname, "../data/results.json"),
+        JSON.stringify(parsedResultsData)
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   getGameByID(id) {
-    return this.getSync(games).find((game) => game.id === id);
+    return this.getSync("games").find((game) => game.id === id);
   }
 
   deleteResult(gameId) {
@@ -117,20 +164,27 @@ class AdminRepository extends GuestRepository {
 
   updateGame(values) {
     const { gameId, updatedGame, updatedResult } = values;
-    const resultId = this.getResultByGameID(gameId)?.id;
+    updatedResult.id = this.getResultByGameID(gameId)?.id;
+    updatedGame.id = gameId;
 
-    const gameIndex = games.findIndex((game) => game.id === gameId);
-    if (gameIndex === -1) {
-      return;
-    }
-    games[gameIndex] = { ...games[gameIndex], ...updatedGame };
+    const currentResults = this.getSync("results");
 
-    const resultIndex = results.findIndex((result) => result.id === resultId);
-    if (resultIndex !== -1) {
-      results[resultIndex] = { ...results[resultIndex], ...updatedResult };
-    } else {
-      this.addResult(gameId, updatedResult);
+    const resultIndex = currentResults.findIndex(
+      (result) => result.id === updatedResult.id
+    );
+
+    if (resultIndex === -1) {
+      updatedResult.id = currentResults[currentResults.length - 1]?.id + 1 || 1;
+      updatedResult.game_id = gameId;
     }
+
+    this.updateGameAsyncAwait(updatedGame, updatedResult);
+
+    // if (resultIndex !== -1) {
+    //   results[resultIndex] = { ...results[resultIndex], ...updatedResult };
+    // } else {
+    //   this.addResult(gameId, updatedResult);
+    // }
   }
 }
 
