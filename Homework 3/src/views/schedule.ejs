@@ -1,0 +1,30 @@
+<ul class="schedule">
+  <% schedule.forEach((game) => { %>
+  <li id="<%= game.gameId %>" class="game">
+    <% if (group === "admin") {%>
+    <button
+      class="btn btn--delete-game"
+      onclick="deleteGame('<%= game.gameId %>')"
+    >
+      <ion-icon name="close-outline"></ion-icon>
+    </button>
+    <%} %>
+    <div class="game-info">
+      <h3 class="game-teams">
+        <%= game.team1Name %> <% if (game.team1Score) { %> <%= game.team1Score
+        %> - <%= game.team2Score %> <% } else { %> VS <% } %> <%= game.team2Name
+        %>
+      </h3>
+      <p class="game-date"><%= game.date %></p>
+    </div>
+    <% if (group === "admin") {%>
+    <a
+      class="btn btn--edit-game"
+      href="/admin/editGame/?gameId=<%= game.gameId %>"
+    >
+      <ion-icon name="create-outline"></ion-icon>
+    </a>
+    <%} %>
+  </li>
+  <% }) %>
+</ul>
