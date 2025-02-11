@@ -30,25 +30,45 @@ class AdminRepository extends GuestRepository {
     );
   }
 
+  deleteWithPromise(fileName, objId) {
+    fsPromises
+      .readFile(path.join(__dirname, `../data/${fileName}.json`), "utf-8")
+      .then((data) => {
+        const parsedData = JSON.parse(data);
+        const updatedData = parsedData.filter((obj) => obj.id !== objId);
+
+        fsPromises
+          .writeFile(
+            path.join(__dirname, `../data/${fileName}.json`),
+            JSON.stringify(updatedData)
+          )
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   getGameByID(id) {
     return this.getSync(games).find((game) => game.id === id);
   }
 
   deleteResult(gameId) {
-    results.forEach((result) => {
-      if (result.game_id === gameId) {
-        results.splice(results.indexOf(result), 1);
-      }
-    });
+    const results = this.getSync("results");
+    const resultIdByGame = results.find(
+      (result) => result.game_id === gameId
+    )?.id;
+
+    if (resultIdByGame) {
+      this.deleteWithPromise("results", resultIdByGame);
+    }
   }
 
   deleteGame(id) {
     this.deleteResult(id);
-    games.forEach((game) => {
-      if (game.id === id) {
-        games.splice(games.indexOf(game), 1);
-      }
-    });
+    this.deleteWithPromise("games", id);
   }
 
   getTeams() {
@@ -65,9 +85,6 @@ class AdminRepository extends GuestRepository {
     if (team1Name === team2Name) {
       return;
     }
-
-    //validate date from frontend
-    // if(date )
 
     const team1ID = this.getTeamByName(team1Name).id;
     const team2ID = this.getTeamByName(team2Name).id;
