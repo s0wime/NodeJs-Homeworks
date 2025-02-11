@@ -1,12 +1,37 @@
-const teams = require("../data/teams");
-const games = require("../data/games");
-const results = require("../data/results");
+const fs = require("node:fs");
+const fsPromises = require("node:fs").promises;
+const path = require("node:path");
 const GuestRepository = require("./GuestRepository");
-// const LIMIT_YEARS = 3;
 
 class AdminRepository extends GuestRepository {
+  updateWithCallback(fileName, info) {
+    fs.readFile(
+      path.join(__dirname, `../data/${fileName}.json`),
+      "utf-8",
+      (err, data) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
+
+        const games = JSON.parse(data);
+        games.push(info);
+
+        fs.writeFile(
+          path.join(__dirname, `../data/${fileName}.json`),
+          JSON.stringify(games),
+          (err) => {
+            if (err) {
+              console.log(err);
+            }
+          }
+        );
+      }
+    );
+  }
+
   getGameByID(id) {
-    return games.find((game) => game.id === id);
+    return this.getSync(games).find((game) => game.id === id);
   }
 
   deleteResult(gameId) {
@@ -27,11 +52,11 @@ class AdminRepository extends GuestRepository {
   }
 
   getTeams() {
-    return teams;
+    return this.getSync("teams");
   }
 
   getTeamByName(name) {
-    return teams.find((team) => team.name === name);
+    return this.getSync("teams").find((team) => team.name === name);
   }
 
   addGame(body) {
@@ -51,6 +76,7 @@ class AdminRepository extends GuestRepository {
       return;
     }
 
+    const games = this.getSync("games");
     const lastID = games[games.length - 1]?.id || 0;
 
     const newGame = {
@@ -60,7 +86,7 @@ class AdminRepository extends GuestRepository {
       team2_id: team2ID,
     };
 
-    games.push(newGame);
+    this.updateWithCallback("games", newGame);
   }
 
   addResult(gameId, result) {

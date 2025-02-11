@@ -4,6 +4,9 @@ const adminRouter = require("./controllers/admin");
 const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
+const GuestRepository = require("./repository/GuestRepository");
+const AdminRepository = require("./repository/AdminRepository");
+
 const app = express();
 const port = 3000;
 

@@ -1,9 +1,20 @@
-const teams = require("../data/teams");
-const games = require("../data/games");
-const results = require("../data/results");
+const fs = require("node:fs");
+const path = require("node:path");
 
 class GuestRepository {
-  transformGames(currentGames = games) {
+  getSync(value) {
+    try {
+      const data = fs.readFileSync(
+        path.join(__dirname, `../data/${value}.json`),
+        "utf-8"
+      );
+      return JSON.parse(data);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  transformGames(currentGames = this.getSync("games")) {
     const fullSchedule = [];
     for (const game of currentGames) {
       const { team1Name, team2Name } = this.getTeamsByGameID(game.id);
@@ -30,25 +41,33 @@ class GuestRepository {
   }
 
   getResultByGameID(id) {
-    return results.find((result) => result.game_id === id) || "";
+    return (
+      this.getSync("results").find((result) => result.game_id === id) || ""
+    );
   }
 
   getTeamsByGameID(id) {
-    const team1 = teams.find(
-      (team) => games.find((game) => game.id === id).team1_id === team.id
+    const team1 = this.getSync("teams").find(
+      (team) =>
+        this.getSync("games").find((game) => game.id === id).team1_id ===
+        team.id
     );
-    const team2 = teams.find(
-      (team) => games.find((game) => game.id === id).team2_id === team.id
+    const team2 = this.getSync("teams").find(
+      (team) =>
+        this.getSync("games").find((game) => game.id === id).team2_id ===
+        team.id
     );
     return { team1Name: team1.name, team2Name: team2.name };
   }
 
   getGamesByTeamID(id) {
-    return games.filter((game) => game.team1_id === id || game.team2_id === id);
+    return this.getSync("games").filter(
+      (game) => game.team1_id === id || game.team2_id === id
+    );
   }
 
   getGamesByTeamName(name) {
-    const team = teams.find((team) => team.name === name);
+    const team = this.getSync("teams").find((team) => team.name === name);
 
     if (!team) {
       return null;
