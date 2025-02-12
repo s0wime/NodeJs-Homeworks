@@ -26,12 +26,12 @@ function fillSelect(select, exclude = null) {
 function initSelects() {
   fillSelect(elSelectTeam1);
   fillSelect(elSelectTeam2);
-  elSelectTeam1.value = teams.find((team) => team.id === game.team1).name;
-  elSelectTeam2.value = teams.find((team) => team.id === game.team2).name;
+  elSelectTeam1.value = teams.find((team) => team.name === game.team1name).name;
+  elSelectTeam2.value = teams.find((team) => team.name === game.team2name).name;
 }
 
 function initScores() {
-  if (!result) {
+  if (!result?.score1 || !result?.score2) {
     return;
   }
 
@@ -87,8 +87,6 @@ elForm.addEventListener("submit", (e) => {
   data.team1Score = parseInt(data.team1Score);
   data.team2Score = parseInt(data.team2Score);
   data.gameId = game.id;
-
-  console.log(data)
 
   const options = {
     method: "PATCH",

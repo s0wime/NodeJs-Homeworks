@@ -2,21 +2,27 @@ const AdminRepositoryClass = require("../repository/AdminRepository");
 const adminRepository = new AdminRepositoryClass();
 
 class AdminService {
-  getGames(req, res) {
+  async getGames(req, res) {
     const teamName = req.query.teamName;
 
     if (!teamName) {
-      const schedule = adminRepository.transformGames();
-      return res.render("fullSchedule", { schedule, group: "admin" });
+      adminRepository.getGames()
+          .then(schedule => {
+            res.render("fullSchedule", {schedule, group: "admin"});
+          })
+          .catch(() => {
+            res.render("errorPage", {errMsg: "Server Error"})
+          })
+      return;
     }
 
-    const result = adminRepository.getGamesByTeamName(teamName);
-
-    if (!result) {
-      return res.render("errorPage", { errMsg: "There is no such team." });
-    }
-
-    res.render("fullSchedule", { schedule: result, group: "admin" });
+    adminRepository.getGamesByTeamName(teamName)
+        .then(games => {
+          res.render("fullSchedule", {schedule: games, group: "admin"});
+        })
+        .catch(() => {
+          res.render("errorPage", {errMsg: "Server Error"})
+        })
   }
 
   async getAddPage(req, res) {
@@ -24,32 +30,38 @@ class AdminService {
     if(!teams) {
       res.render('errorPage', { errMsg: "No teams available" });
     }
+
     res.render("addGame", { teams });
   }
 
   addGame(req, res) {
     const { body } = req;
-    adminRepository.addGame(body);
-    res.redirect("viewSchedule/");
+    adminRepository.addGame(body)
+        .then(() => {
+          res.redirect("viewSchedule/");
+        })
+        .catch(() => {
+          res.render("errorPage", {errMsg: "Server Error"})
+        })
+
   }
 
   async getEditingPage(req, res) {
     const {
       query: { gameId },
     } = req;
+
+    if(!gameId) {
+      return res.render("errorPage", {errMsg: "Bad request" });
+    }
+
     const game = await adminRepository.getGameByID(parseInt(gameId));
-
-    if(!game.rows) {
-      res.render("errorPage", { errMsg: "There is no game." });
+    if(!game) {
+      res.render("errorPage", {errMsg: "No game available"});
     }
-    console.log(game.rows);
     const teams = await adminRepository.getTeams();
-    if(!teams) {
-      res.render('errorPage', { errMsg: "No teams available" });
-    }
-    const result = adminRepository.getResultByGameID(parseInt(gameId));
 
-    res.render("editGame", { game: game.rows[0], teams, result });
+    res.render("editGame", { game, teams, result: {score1: game.score1, score2: game.score2} });
   }
 
   async editGame(req, res) {
@@ -60,18 +72,15 @@ class AdminService {
     const updatedGame = {};
     const updatedResult = {};
 
-    const team1Id = team1Name
-      ? await adminRepository.getTeamByName(team1Name).id
-      : "";
-    const team2Id = team2Name
-      ? await adminRepository.getTeamByName(team2Name).id
-      : "";
-
-    if (team1Id && team2Id) {
-      updatedGame.team1_id = team1Id;
-      updatedGame.team2_id = team2Id;
+    if(gameId) {
+      updatedGame.id = gameId;
     } else {
-      throw new Error();
+      throw new Error('No gameId provided');
+    }
+
+    if (team1Name && team2Name) {
+      updatedGame.team1 = team1Name;
+      updatedGame.team2 = team2Name;
     }
 
     if (date) {
@@ -83,9 +92,13 @@ class AdminService {
       updatedResult.score2 = team2Score;
     }
 
-    adminRepository.updateGame({ gameId, updatedGame, updatedResult });
+    const isSuccess = await adminRepository.updateGame({ updatedGame, updatedResult });
 
-    return res.send("all ok");
+    if(isSuccess) {
+      return res.send("all ok");
+    }else {
+      res.status(500).send("Something went wrong");
+    }
   }
 
   deleteGame(req, res) {

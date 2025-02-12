@@ -1,200 +1,134 @@
-const fs = require("node:fs");
 const fsPromises = require("node:fs").promises;
 const path = require("node:path");
 const GuestRepository = require("./GuestRepository");
 const client = require('../../config/dbconfig')
+const QueryBuilder = require("../utils/QueryBuilder");
+const queryBuilder = new QueryBuilder();
 
 class AdminRepository extends GuestRepository {
 
-  async updateGameAsyncAwait(game, result) {
-    try {
-      const data = await fsPromises.readFile(
-        path.join(__dirname, "../data/games.json"),
-        "utf-8"
-      );
-      const parsedData = JSON.parse(data);
-      const indexOfGame = parsedData.findIndex(
-        (currentGame) => currentGame.id === game.id
-      );
-      if (indexOfGame === -1) {
-        return;
-      }
-      parsedData[indexOfGame] = { ...parsedData[indexOfGame], ...game };
-
-      await fsPromises.writeFile(
-        path.join(__dirname, "../data/games.json"),
-        JSON.stringify(parsedData)
-      );
-
-      const resultsData = await fsPromises.readFile(
-        path.join(__dirname, "../data/results.json"),
-        "utf-8"
-      );
-
-      const parsedResultsData = JSON.parse(resultsData);
-      const indexOfResult = parsedResultsData.findIndex(
-        (currentResult) => currentResult.id === result.id
-      );
-      if (indexOfResult === -1) {
-        parsedResultsData.push(result);
-      } else {
-        parsedResultsData[indexOfResult] = {
-          ...parsedResultsData[indexOfResult],
-          ...result,
-        };
-      }
-
-      await fsPromises.writeFile(
-        path.join(__dirname, "../data/results.json"),
-        JSON.stringify(parsedResultsData)
-      );
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  async updateGame(game, result) {
-
-    try {
-      await client.query('BEGIN')
-
-      const updateQuery = `UPDATE games SET team1=${game.team1_id}, team2=${game.team2_id}, date=${game.date} WHERE id=${game.id}`
-      client.query(updateQuery, (err, res) => {
-        if (err) {
-          throw new Error(err);
-        }
-      });
-    } catch(e) {
-      console.log(e);
-      await client.query('ROLLBACK');
-    }
-  }
-
-  getGameByID(id) {
-    return new Promise((resolve, reject) => {
-      client.query(`SELECT * FROM games WHERE id=${id}`, (err, data) => {
-        if (err) {
-          reject(err);
-        }
-
-        resolve(data);
-      });
-    })
-  }
-
-  deleteResult(gameId) {
-    return new Promise((resolve, reject) => {
-      client.query(`DELETE FROM results WHERE gameId=${gameId}`, (err, data) => {
-        if (err) {
-          reject(err);
-        }
-
-        resolve(data);
-      })
-    })
-  }
-
-  deleteGameById(id) {
-    return new Promise((resolve, reject) => {
-      client.query(`DELETE FROM games WHERE id=${id}`, (err, data) => {
-        if (err) {
-          reject(err);
-        }
-
-        resolve(data);
-      })
-    })
-  }
-
-  async deleteGame(id) {
-    await this.deleteResult(id);
-    await this.deleteGameById("games", id);
-  }
-
-  getTeams() {
-    return new Promise((resolve, reject) => {
-      client.query(`SELECT * FROM teams`, (err, data) => {
-        if (err) {
-          reject(err);
-        }
-
-        resolve(data);
-      });
-    })
-  }
-
-  getTeamByName(name) {
-    return new Promise((resolve, reject) => {
-      client.query(`SELECT * FROM teams WHERE name=${name}`, (err, data) => {
-        if (err) {
-          reject(err);
-        }
-
-        resolve(data);
-      });
-    })
-  }
-
-  async addGame(body) {
-    const { team1Name, team2Name, date } = body;
-
-    if (team1Name === team2Name) {
-      return;
+    getGameByID(id) {
+        return new Promise((resolve, reject) => {
+            const query = queryBuilder.getGameBy('id', id)
+            client.query(query, (err, data) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(data.rows[0]);
+            });
+        })
     }
 
-    const team1ID = await this.getTeamByName(team1Name).id;
-    const team2ID = await this.getTeamByName(team2Name).id;
+    deleteResult(gameId) {
+        return new Promise((resolve, reject) => {
+            client.query(`DELETE FROM results WHERE gameId=${gameId}`, (err, data) => {
+                if (err) {
+                    reject(err);
+                }
 
-    if (isNaN(team1ID) || isNaN(team2ID)) {
-      return;
+                resolve(data);
+            })
+        })
     }
 
-    const games = this.getSync("games");
-    const lastID = games[games.length - 1]?.id || 0;
+    deleteGameById(id) {
+        return new Promise((resolve, reject) => {
+            client.query(`DELETE FROM games WHERE id=${id}`, (err, data) => {
+                if (err) {
+                    reject(err);
+                }
 
-    const newGame = {
-      id: lastID + 1,
-      date: date,
-      team1_id: team1ID,
-      team2_id: team2ID,
-    };
-
-    this.updateWithCallback("games", newGame);
-  }
-
-  addResult(gameId, result) {
-    results.push({
-      id: results[results.length - 1]?.id + 1 || 1,
-      game_id: gameId,
-      score1: result.score1,
-      score2: result.score2,
-    });
-  }
-
-  updateGame(values) {
-    const { gameId, updatedGame, updatedResult } = values;
-    updatedResult.id = this.getResultByGameID(gameId)?.id;
-    updatedGame.id = gameId;
-
-    const currentResults = this.getSync("results");
-
-    const resultIndex = currentResults.findIndex(
-      (result) => result.id === updatedResult.id
-    );
-
-    if (resultIndex === -1) {
-      updatedResult.id = currentResults[currentResults.length - 1]?.id + 1 || 1;
-      updatedResult.game_id = gameId;
+                resolve(data);
+            })
+        })
     }
 
-    this.updateGameAsyncAwait(updatedGame, updatedResult);
+    async deleteGame(id) {
+        await this.deleteResult(id);
+        await this.deleteGameById("games", id);
+    }
 
-    // if (resultIndex !== -1) {
-    //   results[resultIndex] = { ...results[resultIndex], ...updatedResult };
-    // } else {
-    //   this.addResult(gameId, updatedResult);
-    // }
-  }
+    getTeams() {
+        return new Promise((resolve, reject) => {
+            const query = queryBuilder.getTeamBy();
+            client.query(query, (err, data) => {
+                if (err) {
+                    reject(err);
+                }
+
+                resolve(data.rows);
+            });
+        })
+    }
+
+    getTeamByName(name) {
+        return new Promise((resolve, reject) => {
+            client.query(`SELECT * FROM teams WHERE name=${name}`, (err, data) => {
+                if (err) {
+                    reject(err);
+                }
+
+                resolve(data);
+            });
+        })
+    }
+
+    async addGame(body) {
+        const {team1Name, team2Name, date} = body;
+
+        if (team1Name === team2Name) {
+            return;
+        }
+
+        const query = queryBuilder.addGame(team1Name, team2Name, date);
+        client.query(query, (err, _) => {
+            if (err) {
+                console.log(err)
+            }
+        })
+    }
+
+    addResult(gameId, result) {
+        results.push({
+            id: results[results.length - 1]?.id + 1 || 1,
+            game_id: gameId,
+            score1: result.score1,
+            score2: result.score2,
+        });
+    }
+
+    async updateGame(values) {
+        const {updatedGame, updatedResult} = values;
+
+        await client.query('BEGIN')
+        try {
+            if (updatedResult.score1 && updatedResult.score1 && updatedGame.team1 && updatedGame.team2) {
+                const queryUpdateGame = queryBuilder.updateGame(updatedGame);
+                await client.query(queryUpdateGame)
+
+                const queryUpdateResult = queryBuilder.updateResult(updatedGame.id, updatedResult);
+                await client.query(queryUpdateResult)
+
+                client.query('COMMIT')
+                return true
+
+            } else if (updatedResult.score1 && updatedResult.score2) {
+                const queryUpdateResult = queryBuilder.updateResult(updatedGame.id, updatedResult);
+                await client.query(queryUpdateResult)
+                client.query('COMMIT')
+                return true
+            } else if (updatedGame.team1 && updatedGame.team2) {
+                const queryUpdateGame = queryBuilder.updateGame(updatedGame);
+                await client.query(queryUpdateGame)
+                client.query('COMMIT')
+                return true
+            } else {
+                return false;
+            }
+        } catch (e) {
+            client.query('ROLLBACK')
+        }
+    }
 }
 
 module.exports = AdminRepository;
