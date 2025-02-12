@@ -1,80 +1,37 @@
-const fs = require("node:fs");
-const path = require("node:path");
+const client = require('../../config/dbconfig')
+const QueryBuilder = require("../utils/QueryBuilder");
+const queryBuilder = new QueryBuilder();
 
 class GuestRepository {
-  getSync(value) {
-    try {
-      const data = fs.readFileSync(
-        path.join(__dirname, `../data/${value}.json`),
-        "utf-8"
-      );
-      return JSON.parse(data);
-    } catch (e) {
-      console.log(e);
-    }
-  }
 
-  transformGames(currentGames = this.getSync("games")) {
-    const fullSchedule = [];
-    for (const game of currentGames) {
-      const { team1Name, team2Name } = this.getTeamsByGameID(game.id);
-      const results = this.getResultByGameID(game.id);
-      fullSchedule.push({
-        gameId: game.id,
-        date: game.date,
-        team1Name: team1Name,
-        team2Name: team2Name,
-        team1Score: results?.score1,
-        team2Score: results?.score2,
-      });
-    }
-    return fullSchedule.sort((a, b) => {
-      return (
-        this.convertTimestampToNumber(a.date) -
-        this.convertTimestampToNumber(b.date)
-      );
-    });
-  }
+  getGames() {
+    return new Promise((resolve, reject) => {
+      const query = queryBuilder.getGameBy();
 
-  convertTimestampToNumber(timestamp) {
-    return new Date(timestamp).getTime();
-  }
+      client.query(query, (err, res) => {
+        if (err) reject(err);
 
-  getResultByGameID(id) {
-    return (
-      this.getSync("results").find((result) => result.game_id === id) || ""
-    );
-  }
-
-  getTeamsByGameID(id) {
-    const team1 = this.getSync("teams").find(
-      (team) =>
-        this.getSync("games").find((game) => game.id === id).team1_id ===
-        team.id
-    );
-    const team2 = this.getSync("teams").find(
-      (team) =>
-        this.getSync("games").find((game) => game.id === id).team2_id ===
-        team.id
-    );
-    return { team1Name: team1.name, team2Name: team2.name };
-  }
-
-  getGamesByTeamID(id) {
-    return this.getSync("games").filter(
-      (game) => game.team1_id === id || game.team2_id === id
-    );
+        resolve(res.rows);
+      })
+    })
   }
 
   getGamesByTeamName(name) {
-    const team = this.getSync("teams").find((team) => team.name === name);
+    return new Promise((resolve, reject) => {
+      const query = queryBuilder.getGameBy('teamName', name);
 
-    if (!team) {
-      return null;
-    }
+      client.query(query, (err, res) => {
+        if (err) {
+          reject();
+        }
 
-    const games = this.getGamesByTeamID(team.id);
-    return this.transformGames(games);
+        if(!res.rows[0]?.id) {
+          resolve(null)
+        }
+
+        resolve(res.rows);
+      })
+    })
   }
 }
 

@@ -26,8 +26,8 @@ function fillSelect(select, exclude = null) {
 function initSelects() {
   fillSelect(elSelectTeam1);
   fillSelect(elSelectTeam2);
-  elSelectTeam1.value = teams.find((team) => team.id === game.team1_id).name;
-  elSelectTeam2.value = teams.find((team) => team.id === game.team2_id).name;
+  elSelectTeam1.value = teams.find((team) => team.id === game.team1).name;
+  elSelectTeam2.value = teams.find((team) => team.id === game.team2).name;
 }
 
 function initScores() {
@@ -87,6 +87,8 @@ elForm.addEventListener("submit", (e) => {
   data.team1Score = parseInt(data.team1Score);
   data.team2Score = parseInt(data.team2Score);
   data.gameId = game.id;
+
+  console.log(data)
 
   const options = {
     method: "PATCH",

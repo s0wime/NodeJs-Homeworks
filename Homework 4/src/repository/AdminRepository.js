@@ -2,54 +2,9 @@ const fs = require("node:fs");
 const fsPromises = require("node:fs").promises;
 const path = require("node:path");
 const GuestRepository = require("./GuestRepository");
+const client = require('../../config/dbconfig')
 
 class AdminRepository extends GuestRepository {
-  updateWithCallback(fileName, info) {
-    fs.readFile(
-      path.join(__dirname, `../data/${fileName}.json`),
-      "utf-8",
-      (err, data) => {
-        if (err) {
-          console.log(err);
-          return;
-        }
-
-        const games = JSON.parse(data);
-        games.push(info);
-
-        fs.writeFile(
-          path.join(__dirname, `../data/${fileName}.json`),
-          JSON.stringify(games),
-          (err) => {
-            if (err) {
-              console.log(err);
-            }
-          }
-        );
-      }
-    );
-  }
-
-  deleteWithPromise(fileName, objId) {
-    fsPromises
-      .readFile(path.join(__dirname, `../data/${fileName}.json`), "utf-8")
-      .then((data) => {
-        const parsedData = JSON.parse(data);
-        const updatedData = parsedData.filter((obj) => obj.id !== objId);
-
-        fsPromises
-          .writeFile(
-            path.join(__dirname, `../data/${fileName}.json`),
-            JSON.stringify(updatedData)
-          )
-          .catch((err) => {
-            console.log(err);
-          });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
 
   async updateGameAsyncAwait(game, result) {
     try {
@@ -98,43 +53,97 @@ class AdminRepository extends GuestRepository {
     }
   }
 
-  getGameByID(id) {
-    return this.getSync("games").find((game) => game.id === id);
-  }
+  async updateGame(game, result) {
 
-  deleteResult(gameId) {
-    const results = this.getSync("results");
-    const resultIdByGame = results.find(
-      (result) => result.game_id === gameId
-    )?.id;
+    try {
+      await client.query('BEGIN')
 
-    if (resultIdByGame) {
-      this.deleteWithPromise("results", resultIdByGame);
+      const updateQuery = `UPDATE games SET team1=${game.team1_id}, team2=${game.team2_id}, date=${game.date} WHERE id=${game.id}`
+      client.query(updateQuery, (err, res) => {
+        if (err) {
+          throw new Error(err);
+        }
+      });
+    } catch(e) {
+      console.log(e);
+      await client.query('ROLLBACK');
     }
   }
 
-  deleteGame(id) {
-    this.deleteResult(id);
-    this.deleteWithPromise("games", id);
+  getGameByID(id) {
+    return new Promise((resolve, reject) => {
+      client.query(`SELECT * FROM games WHERE id=${id}`, (err, data) => {
+        if (err) {
+          reject(err);
+        }
+
+        resolve(data);
+      });
+    })
+  }
+
+  deleteResult(gameId) {
+    return new Promise((resolve, reject) => {
+      client.query(`DELETE FROM results WHERE gameId=${gameId}`, (err, data) => {
+        if (err) {
+          reject(err);
+        }
+
+        resolve(data);
+      })
+    })
+  }
+
+  deleteGameById(id) {
+    return new Promise((resolve, reject) => {
+      client.query(`DELETE FROM games WHERE id=${id}`, (err, data) => {
+        if (err) {
+          reject(err);
+        }
+
+        resolve(data);
+      })
+    })
+  }
+
+  async deleteGame(id) {
+    await this.deleteResult(id);
+    await this.deleteGameById("games", id);
   }
 
   getTeams() {
-    return this.getSync("teams");
+    return new Promise((resolve, reject) => {
+      client.query(`SELECT * FROM teams`, (err, data) => {
+        if (err) {
+          reject(err);
+        }
+
+        resolve(data);
+      });
+    })
   }
 
   getTeamByName(name) {
-    return this.getSync("teams").find((team) => team.name === name);
+    return new Promise((resolve, reject) => {
+      client.query(`SELECT * FROM teams WHERE name=${name}`, (err, data) => {
+        if (err) {
+          reject(err);
+        }
+
+        resolve(data);
+      });
+    })
   }
 
-  addGame(body) {
+  async addGame(body) {
     const { team1Name, team2Name, date } = body;
 
     if (team1Name === team2Name) {
       return;
     }
 
-    const team1ID = this.getTeamByName(team1Name).id;
-    const team2ID = this.getTeamByName(team2Name).id;
+    const team1ID = await this.getTeamByName(team1Name).id;
+    const team2ID = await this.getTeamByName(team2Name).id;
 
     if (isNaN(team1ID) || isNaN(team2ID)) {
       return;

@@ -8,14 +8,6 @@ const bodyParser = require("body-parser");
 const app = express();
 const port = 3000;
 
-client.connect()
-    .then(() => {
-      console.log('Connected to PostgreSQL database');
-    })
-    .catch((err) => {
-      console.error('Error connecting to PostgreSQL database', err);
-    });
-
 app.use(express.static(path.join(__dirname, "../public")));
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -31,10 +23,22 @@ app.get("/", (req, res) => {
   res.render("mainPage");
 });
 
+app.get('/hu', (req, res) => {
+    const id = 1;
+    client.query('')
+})
+
 app.use("*", (req, res) => {
   res.status(404).render("errorPage", { errMsg: "Bad request." });
 });
 
-app.listen(port, "localhost", () => {
-  console.log(`http://localhost:${port}`);
-});
+client.connect()
+    .then(() => {
+        console.log('Connected to PostgreSQL database');
+        app.listen(port, "localhost", () => {
+            console.log(`http://localhost:${port}`);
+        });
+    })
+    .catch((err) => {
+        console.error('Error connecting to PostgreSQL database', err);
+    });
