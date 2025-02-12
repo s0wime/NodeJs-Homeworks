@@ -1,14 +1,20 @@
 const guestRouter = require("./controllers/guest");
 const adminRouter = require("./controllers/admin");
-
 const path = require("path");
+const client = require('../config/dbconfig');
 const express = require("express");
 const bodyParser = require("body-parser");
-const GuestRepository = require("./repository/GuestRepository");
-const AdminRepository = require("./repository/AdminRepository");
 
 const app = express();
 const port = 3000;
+
+client.connect()
+    .then(() => {
+      console.log('Connected to PostgreSQL database');
+    })
+    .catch((err) => {
+      console.error('Error connecting to PostgreSQL database', err);
+    });
 
 app.use(express.static(path.join(__dirname, "../public")));
 
