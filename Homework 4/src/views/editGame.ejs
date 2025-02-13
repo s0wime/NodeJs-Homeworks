@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game editing</title>
+    <link rel="stylesheet" href="/styles/editGameStyle.css" />
+  </head>
+  <body>
+    <div class="modal">
+      <form class="form">
+        <div class="teams-container">
+          <div class="team-edit">
+            <div class="team-edit-name">
+              <label for="team1Name">Team 1</label>
+              <select id="team1Name" name="team1Name"></select>
+            </div>
+            <div class="team-edit-score">
+              <label for="team1Score">Score</label>
+              <input
+                id="team1Score"
+                type="number"
+                name="team1Score"
+                class="team-score"
+              />
+            </div>
+          </div>
+          <div class="vs">VS</div>
+          <div class="team-edit">
+            <div class="team-edit-name">
+              <label for="team2Name">Team 2</label>
+              <select id="team2Name" name="team2Name"></select>
+            </div>
+            <div class="team-edit-score">
+              <label for="team2Score">Score</label>
+              <input
+                id="team2Score"
+                type="number"
+                name="team2Score"
+                class="team-score"
+              />
+            </div>
+          </div>
+        </div>
+        <label for="date">Date</label>
+        <input type="datetime-local" id="date" name="date" />
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+    <script>
+      window.game = <%- JSON.stringify(game) %>;
+      window.teams = <%- JSON.stringify(teams) %>
+      window.result = <%- JSON.stringify(result) %>
+    </script>
+    <script src="/scripts/editGame.js"></script>
+  </body>
+</html>
