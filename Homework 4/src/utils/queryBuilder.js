@@ -24,7 +24,7 @@ class QueryBuilder {
         }
     }
 
-    getTeamBy(searchKey = 'default', value = null) {
+    getTeamBy(searchKey = 'default') {
         if(searchKey === 'default') {
             return `SELECT * FROM teams`
         }
@@ -66,9 +66,14 @@ class QueryBuilder {
             "SET\n" +
             `    score1=${result.score1},
 ` +
-            `    score2=${result.score1}
+            `    score2=${result.score2}
 ` +
             `WHERE gameid=${gameId}`
+    }
+
+    checkIsResultExist(gameId) {
+        return "SELECT 1 FROM results\n" +
+            `WHERE gameid = ${gameId}`
     }
 }
 
