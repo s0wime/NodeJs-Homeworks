@@ -23,11 +23,6 @@ app.get("/", (req, res) => {
   res.render("mainPage");
 });
 
-app.get('/hu', (req, res) => {
-    const id = 1;
-    client.query('')
-})
-
 app.use("*", (req, res) => {
   res.status(404).render("errorPage", { errMsg: "Bad request." });
 });

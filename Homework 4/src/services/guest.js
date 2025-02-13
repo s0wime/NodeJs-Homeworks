@@ -8,6 +8,7 @@ class GuestService {
         if (!teamName) {
             guestRepository.getGames()
                 .then(schedule => {
+                    console.log(schedule)
                   res.render("fullSchedule", {schedule, group: "guest"});
                 })
                 .catch(() => {
@@ -18,6 +19,10 @@ class GuestService {
 
         guestRepository.getGamesByTeamName(teamName)
             .then(games => {
+                if(!games) {
+                    return res.render("errorPage", {errMsg: "No games found"})
+                }
+
               res.render("fullSchedule", {schedule: games, group: "guest"});
             })
             .catch(() => {

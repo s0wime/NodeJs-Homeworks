@@ -69,7 +69,7 @@ class AdminRepository extends GuestRepository {
         const query = queryBuilder.addGame(team1Name, team2Name, date);
         client.query(query, (err, _) => {
             if (err) {
-                console.log(err)
+                console.log(err);
             }
         })
     }

@@ -18,6 +18,10 @@ class AdminService {
 
     adminRepository.getGamesByTeamName(teamName)
         .then(games => {
+          if(!games) {
+            return res.render("errorPage", {errMsg: "No games found"})
+          }
+
           res.render("fullSchedule", {schedule: games, group: "admin"});
         })
         .catch(() => {
