@@ -5,20 +5,36 @@ class AdminService {
   async getGames(req, res) {
     const { teamName, dateSort, gameStatus } = req.query;
 
-    console.log(dateSort);
-
     if (!teamName) {
       adminRepository
         .getGames()
         .then((schedule) => {
-          if (dateSort === "desc") {
-            schedule.sort((a, b) => {
-              return new Date(a.date) - new Date(b.date);
-            });
-          } else if (dateSort === "asc") {
-            schedule.sort((a, b) => {
-              return new Date(b.date) - new Date(a.date);
-            });
+          switch (dateSort) {
+            case "desc":
+              schedule.sort((a, b) => {
+                return new Date(a.date) - new Date(b.date);
+              });
+              break;
+            case "asc":
+              schedule.sort((a, b) => {
+                return new Date(b.date) - new Date(a.date);
+              });
+              break;
+            default:
+              break;
+          }
+
+          switch (gameStatus) {
+            case "completed":
+              schedule = [
+                ...schedule.filter((game) => game.score1 && game.score2),
+              ];
+              break;
+            case "upcoming":
+              schedule = [
+                ...schedule.filter((game) => !game.score1 && !game.score2),
+              ];
+              break;
           }
 
           res.render("fullSchedule", { schedule, group: "admin" });
