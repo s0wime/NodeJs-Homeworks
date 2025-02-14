@@ -38,6 +38,7 @@ header {
   margin: 0 auto;
   display: flex;
   gap: 1rem;
+  position: relative;
 }
 
 .form-game-finder {
@@ -144,6 +145,14 @@ main {
 
 .btn--add-game:hover {
   background-color: #37b24d;
+}
+
+.btn--back:link,
+.btn--back:visited {
+  position: absolute;
+  left: -12%;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 footer {
