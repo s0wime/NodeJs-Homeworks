@@ -18,16 +18,6 @@ function deleteGame(id) {
     });
 }
 
-function handleFieldsetChanging(event) {}
-
 btnFilter.addEventListener("click", () => {
   elFilterBlock.classList.toggle("hidden");
-});
-
-elFilterByDate.addEventListener("change", (e) => {
-  handleFieldsetChanging(e);
-});
-
-elFilterByStatus.addEventListener("change", (e) => {
-  handleFieldsetChanging(e);
 });

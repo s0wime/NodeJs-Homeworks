@@ -34,7 +34,7 @@
       </div>
     </header>
     <main>
-      <div class="filter-block hidden">
+      <form action="/<%= group %>/viewSchedule/" class="filter-block hidden">
         <fieldset class="filter-by-date">
           <p class="filter-heading">Sort date:</p>
           <div>
@@ -43,6 +43,8 @@
               id="date-desc"
               name="dateSort"
               class="filter-option"
+              value="desc"
+              checked
             />
             <label for="date-desc" class="label-filter-option"
               >Descending</label
@@ -54,6 +56,7 @@
               id="date-asc"
               name="dateSort"
               class="filter-option"
+              value="asc"
             />
             <label for="date-asc" class="label-filter-option">Ascending</label>
           </div>
@@ -66,6 +69,8 @@
               id="all-games"
               name="gameStatus"
               class="filter-option"
+              value="all"
+              checked
             />
             <label for="all-games" class="label-filter-option">All</label>
           </div>
@@ -75,6 +80,7 @@
               id="upcoming-games"
               name="gameStatus"
               class="filter-option"
+              value="upcoming"
             />
             <label for="upcoming-games" class="label-filter-option"
               >Upcoming</label
@@ -86,13 +92,15 @@
               id="completed-games"
               name="gameStatus"
               class="filter-option"
+              value="completed"
             />
             <label for="completed-games" class="label-filter-option"
               >Completed</label
             >
           </div>
         </fieldset>
-      </div>
+        <button class="btn btn--filter" type="submit">Apply</button>
+      </form>
       <%- include('schedule'); -%>
     </main>
     <footer>
