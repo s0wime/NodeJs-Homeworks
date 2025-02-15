@@ -52,6 +52,30 @@ class AdminService {
           return res.render("errorPage", { errMsg: "No games found" });
         }
 
+        switch (dateSort) {
+          case "desc":
+            games.sort((a, b) => {
+              return new Date(b.date) - new Date(a.date);
+            });
+            break;
+          case "asc":
+            games.sort((a, b) => {
+              return new Date(a.date) - new Date(b.date);
+            });
+            break;
+          default:
+            break;
+        }
+
+        switch (gameStatus) {
+          case "completed":
+            games = [...games.filter((game) => game.score1 && game.score2)];
+            break;
+          case "upcoming":
+            games = [...games.filter((game) => !game.score1 && !game.score2)];
+            break;
+        }
+
         res.render("fullSchedule", { schedule: games, group: "admin" });
       })
       .catch(() => {
