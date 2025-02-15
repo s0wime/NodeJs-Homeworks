@@ -28,6 +28,25 @@ function deleteGame(id) {
     });
 }
 
+function fillFilterOptions() {
+  const dateSortValue = url.searchParams.get("dateSort") || "";
+  const gameStatusValue = url.searchParams.get("gameStatus") || "";
+
+  if (dateSortValue) {
+    [optionDateSortAsc, optionDateSortDesc].map((option) =>
+      option.value === dateSortValue ? (option.checked = true) : ""
+    );
+  }
+
+  if (gameStatusValue) {
+    [optionAllGames, optionUpcomingGames, optionCompletedGames].map((option) =>
+      option.value === gameStatusValue ? (option.checked = true) : ""
+    );
+  }
+}
+
+fillFilterOptions();
+
 btnFilter.addEventListener("click", () => {
   elFormFilter.classList.toggle("hidden");
 });
@@ -72,8 +91,6 @@ elFormSearch.addEventListener("submit", (e) => {
   } else {
     url.searchParams.set("teamName", teamName);
   }
-
-  console.log(url.toString());
 
   window.location.href = url.toString();
 });
