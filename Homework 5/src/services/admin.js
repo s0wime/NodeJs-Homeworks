@@ -12,12 +12,12 @@ class AdminService {
           switch (dateSort) {
             case "desc":
               schedule.sort((a, b) => {
-                return new Date(a.date) - new Date(b.date);
+                return new Date(b.date) - new Date(a.date);
               });
               break;
             case "asc":
               schedule.sort((a, b) => {
-                return new Date(b.date) - new Date(a.date);
+                return new Date(a.date) - new Date(b.date);
               });
               break;
             default:
