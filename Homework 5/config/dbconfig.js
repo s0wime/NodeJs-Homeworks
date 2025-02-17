@@ -1,12 +1,5 @@
-const { Client } = require('pg');
-require('dotenv').config();
+const { PrismaClient } = require("@prisma/client");
 
-const client = new Client({
-    user: process.env.USERDB_NAME,
-    password: process.env.USERPASSWORD,
-    host: process.env.HOST,
-    port: process.env.PORT,
-    database: process.env.DB_NAME
-})
+const prisma = new PrismaClient();
 
-module.exports = client;
+module.exports = prisma;
