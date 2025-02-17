@@ -1,7 +1,6 @@
 const guestRouter = require("./controllers/guest");
 const adminRouter = require("./controllers/admin");
 const path = require("path");
-const client = require('../config/dbconfig');
 const express = require("express");
 const bodyParser = require("body-parser");
 
@@ -27,13 +26,6 @@ app.use("*", (req, res) => {
   res.status(404).render("errorPage", { errMsg: "Bad request." });
 });
 
-client.connect()
-    .then(() => {
-        console.log('Connected to PostgreSQL database');
-        app.listen(port, "localhost", () => {
-            console.log(`http://localhost:${port}`);
-        });
-    })
-    .catch((err) => {
-        console.error('Error connecting to PostgreSQL database', err);
-    });
+app.listen(port, "localhost", () => {
+  console.log(`http://localhost:${port}`);
+});
