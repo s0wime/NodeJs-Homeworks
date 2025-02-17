@@ -94,6 +94,7 @@ class AdminService {
 
   addGame(req, res) {
     const { body } = req;
+    body.date = new Date(body.date).toISOString();
     adminRepository
       .addGame(body)
       .then(() => {
@@ -177,8 +178,13 @@ class AdminService {
       return res.render("errorPage", { errMsg: "There is no such game." });
     }
 
-    adminRepository.deleteGame(parsedGameId);
-    res.status(200).send({ message: "ok" });
+    adminRepository.deleteGame(parsedGameId).then((response) => {
+      if (response.msg) {
+        res.render("errorPage", { errMsg: response.msg });
+      } else {
+        res.status(200).send({ message: "ok" });
+      }
+    });
   }
 }
 
