@@ -1,37 +1,30 @@
-const client = require('../../config/dbconfig')
-const QueryBuilder = require("../utils/QueryBuilder");
-const queryBuilder = new QueryBuilder();
+const { name } = require("ejs");
+const prisma = require("../../config/dbconfig");
 
 class GuestRepository {
-
-  getGames() {
-    return new Promise((resolve, reject) => {
-      const query = queryBuilder.getGameBy();
-
-      client.query(query, (err, res) => {
-        if (err) reject(err);
-
-        resolve(res.rows);
-      })
-    })
+  async getGames() {
+    return prisma.games.findMany({
+      include: {
+        team1: { select: { name: true } },
+        team2: { select: { name: true } },
+        team1Id: false,
+        team2Id: false,
+      },
+    });
   }
 
-  getGamesByTeamName(name) {
-    return new Promise((resolve, reject) => {
-      const query = queryBuilder.getGameBy('teamName', name);
-
-      client.query(query, (err, res) => {
-        if (err) {
-          reject();
-        }
-
-        if(!res.rows[0]?.id) {
-          resolve(null)
-        }
-
-        resolve(res.rows);
-      })
-    })
+  async getGamesByTeamName(teamName) {
+    return prisma.games.findMany({
+      where: {
+        OR: [{ team1: { name: teamName } }, { team2: { name: teamName } }],
+      },
+      include: {
+        team1: { select: { name: true } },
+        team2: { select: { name: true } },
+        team1Id: false,
+        team2Id: false,
+      },
+    });
   }
 }
 
