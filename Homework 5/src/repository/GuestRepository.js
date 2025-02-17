@@ -7,6 +7,7 @@ class GuestRepository {
       include: {
         team1: { select: { name: true } },
         team2: { select: { name: true } },
+        results: { select: { score1: true, score2: true } },
         team1Id: false,
         team2Id: false,
       },
@@ -21,6 +22,8 @@ class GuestRepository {
       include: {
         team1: { select: { name: true } },
         team2: { select: { name: true } },
+        results: { select: { score1: true, score2: true } },
+
         team1Id: false,
         team2Id: false,
       },
