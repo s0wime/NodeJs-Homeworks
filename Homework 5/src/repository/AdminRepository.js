@@ -1,113 +1,97 @@
 const GuestRepository = require("./GuestRepository");
-const client = require('../../config/dbconfig')
-const QueryBuilder = require("../utils/QueryBuilder");
-const queryBuilder = new QueryBuilder();
+const client = require("../../config/dbconfig");
+const prisma = require("../../config/dbconfig");
 
 class AdminRepository extends GuestRepository {
+  async getGameByID(id) {
+    const game = await prisma.games.findFirst({
+      where: { id },
+      include: {
+        team1: { select: { name: true } },
+        team2: { select: { name: true } },
+        results: { select: { score1: true, score2: true } },
 
-    getGameByID(id) {
-        return new Promise((resolve, reject) => {
-            const query = queryBuilder.getGameBy('id', id)
-            client.query(query, (err, data) => {
-                if (err) {
-                    reject(err);
-                }
-                resolve(data.rows[0]);
-            });
-        })
+        team1Id: false,
+        team2Id: false,
+      },
+    });
+
+    return this.transformGame(game);
+  }
+
+  async deleteGame(id) {
+    try {
+      await prisma.$transaction([
+        prisma.results.deleteMany({
+          where: { gameId: id },
+        }),
+        prisma.games.delete({
+          where: { id },
+        }),
+      ]);
+      return {};
+    } catch (err) {
+      return { msg: err.message };
+    }
+  }
+
+  async getTeams() {
+    return prisma.teams.findMany();
+  }
+
+  async addGame(body) {
+    const { team1Name, team2Name, date } = body;
+
+    console.log(team1Name, team2Name, date);
+
+    if (team1Name === team2Name) {
+      return;
     }
 
-    deleteResult(gameId) {
-        return new Promise((resolve, reject) => {
-            client.query(`DELETE FROM results WHERE gameId=${gameId}`, (err, data) => {
-                if (err) {
-                    reject(err);
-                }
+    await prisma.games.create({
+      data: {
+        team1: { connect: { name: team1Name } },
+        team2: { connect: { name: team2Name } },
+        date,
+      },
+    });
+  }
 
-                resolve(data);
-            })
-        })
+  async updateGame(values) {
+    const { updatedGame, updatedResult } = values;
+
+    try {
+      await client.query("BEGIN");
+
+      if (updatedGame?.team1 && updatedGame?.team2) {
+        const queryUpdateGame = queryBuilder.updateGame(updatedGame);
+        await client.query(queryUpdateGame);
+      }
+
+      if (updatedResult?.score1 && updatedResult?.score2) {
+        await this.updateGameResult(updatedGame.id, updatedResult);
+      }
+
+      await client.query("COMMIT");
+      return true;
+    } catch (error) {
+      await client.query("ROLLBACK");
+      throw new Error(`Failed to update game: ${error.message}`);
     }
+  }
 
-    deleteGameById(id) {
-        return new Promise((resolve, reject) => {
-            client.query(`DELETE FROM games WHERE id=${id}`, (err, data) => {
-                if (err) {
-                    reject(err);
-                }
+  async updateGameResult(gameId, result) {
+    const { rows } = await client.query(
+      queryBuilder.checkIsResultExist(gameId)
+    );
 
-                resolve(data);
-            })
-        })
-    }
+    const query =
+      rows.length > 0
+        ? queryBuilder.updateResult(gameId, result)
+        : queryBuilder.addResult(gameId, result);
 
-    async deleteGame(id) {
-        await this.deleteResult(id);
-        await this.deleteGameById(id);
-    }
-
-    getTeams() {
-        return new Promise((resolve, reject) => {
-            const query = queryBuilder.getTeamBy();
-            client.query(query, (err, data) => {
-                if (err) {
-                    reject(err);
-                }
-
-                resolve(data.rows);
-            });
-        })
-    }
-
-    async addGame(body) {
-        const {team1Name, team2Name, date} = body;
-
-        if (team1Name === team2Name) {
-            return;
-        }
-
-        const query = queryBuilder.addGame(team1Name, team2Name, date);
-        client.query(query, (err, _) => {
-            if (err) {
-                console.log(err);
-            }
-        })
-    }
-
-    async updateGame(values) {
-        const { updatedGame, updatedResult } = values;
-
-        try {
-            await client.query('BEGIN');
-
-            if (updatedGame?.team1 && updatedGame?.team2) {
-                const queryUpdateGame = queryBuilder.updateGame(updatedGame);
-                await client.query(queryUpdateGame);
-            }
-
-            if (updatedResult?.score1 && updatedResult?.score2) {
-                await this.updateGameResult(updatedGame.id, updatedResult);
-            }
-
-            await client.query('COMMIT');
-            return true;
-        } catch (error) {
-            await client.query('ROLLBACK');
-            throw new Error(`Failed to update game: ${error.message}`);
-        }
-    }
-
-    async updateGameResult(gameId, result) {
-        const { rows } = await client.query(
-            queryBuilder.checkIsResultExist(gameId)
-        );
-
-        const query = rows.length > 0
-            ? queryBuilder.updateResult(gameId, result)
-            : queryBuilder.addResult(gameId, result);
-
-        await client.query(query);
-    }
+    await client.query(query);
+  }
 }
 
 module.exports = AdminRepository;
