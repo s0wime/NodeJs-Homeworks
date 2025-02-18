@@ -26,8 +26,8 @@ function fillSelect(select, exclude = null) {
 function initSelects() {
   fillSelect(elSelectTeam1);
   fillSelect(elSelectTeam2);
-  elSelectTeam1.value = teams.find((team) => team.name === game.team1name).name;
-  elSelectTeam2.value = teams.find((team) => team.name === game.team2name).name;
+  elSelectTeam1.value = teams.find((team) => team.name === game.team1Name).name;
+  elSelectTeam2.value = teams.find((team) => team.name === game.team2Name).name;
 }
 
 function initScores() {
