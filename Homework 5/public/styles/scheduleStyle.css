@@ -3,6 +3,7 @@
   --secondary-color: #fbe0c3;
   --background-color: #f8f9fa;
   --text-color: #344648;
+  --text-secondary-color: #252b2c;
   --border-color: #7d8e95;
   --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -177,7 +178,7 @@ fieldset {
   display: flex;
   align-items: center;
   background-color: white;
-  padding: 1.5rem;
+  padding: 1.25rem;
   border-radius: 0.75rem;
   box-shadow: var(--shadow);
   transition: transform 0.2s ease;
@@ -193,19 +194,47 @@ fieldset {
 
 .game-info {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.game-teams {
-  font-size: 1.25rem;
+.game-details {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+}
+
+.team {
+  flex: 1;
+  font-size: 1.15rem;
   font-weight: 600;
-  color: var(--text-color);
-  margin-bottom: 0.5rem;
-  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.team1 {
+  text-align: right;
+}
+
+.team2 {
+  text-align: left;
+}
+
+.score {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-secondary-color);
+  background-color: rgba(243, 243, 243, 0.9);
+  border: 1px solid #b8b7b7;
+  border-radius: 0.75rem;
+  padding: 0.25rem 0.5rem;
 }
 
 .game-date {
   font-size: 0.875rem;
-  color: #7d8e95;
+  color: var(--border-color);
   text-align: center;
 }
 
@@ -242,7 +271,7 @@ footer p {
   color: var(--text-color);
 }
 
-@media (max-width: 800px) {
+@media (max-width: 640px) {
   main {
     align-items: center;
     flex-direction: column;
@@ -267,13 +296,11 @@ footer p {
   }
 
   .game-finder {
-    font-size: 1.25rem;
-    flex-grow: 2;
+    font-size: 1.1rem;
   }
 
   .btn--search {
-    width: 100%;
-    flex-grow: 1;
+    width: 7rem;
   }
 
   .filter-by-date, .filter-by-status {
@@ -283,10 +310,22 @@ footer p {
 
   .game {
     padding: 1rem;
-    width: 85vw;
+    width: 90vw;
   }
 
-  .game-teams {
-    font-size: 1.125rem;
+  .game-details {
+    gap: 0.5rem;
+  }
+
+  .team {
+    font-size: 1rem;
+  }
+
+  .score {
+    font-size: 1rem;
+  }
+
+  .game-date {
+    font-size: 0.75rem;
   }
 }

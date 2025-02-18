@@ -10,17 +10,17 @@
     <header>
       <div class="header-tools">
         <div class="header-buttons">
-          <a href="/" class="btn btn--back"></ф>
-          <ion-icon name="arrow-back-outline"></ion-icon>
-        </a>
-        <% if (group === "admin") {%>
-        <a href="/admin/addGame" class="btn btn--add-game">
-          <ion-icon name="add-outline"></ion-icon>
-        </a>
-        <%} %>
-        <button class="btn btn--game-filter">
-          <ion-icon name="funnel-outline"></ion-icon>
-        </button>
+          <a href="/" class="btn btn--back">
+            <ion-icon name="arrow-back-outline"></ion-icon>
+          </a>
+          <% if (group === "admin") {%>
+          <a href="/admin/addGame" class="btn btn--add-game">
+            <ion-icon name="add-outline"></ion-icon>
+          </a>
+          <%} %>
+          <button class="btn btn--game-filter">
+            <ion-icon name="funnel-outline"></ion-icon>
+          </button>
         </div>
         <form action="/<%= group %>/viewSchedule/" class="form-game-finder">
           <input
@@ -41,67 +41,75 @@
       >
         <div class="filter-options">
           <fieldset class="filter-by-date">
-          <legend class="filter-heading">Sort date:</legend>
-          <div class="filter-option-group">
-            <div class="filter-option-wrapper">
-              <input
-                type="radio"
-                id="date-asc"
-                name="dateSort"
-                class="filter-option"
-                value="asc"
-              />
-              <label for="date-asc" class="label-filter-option">Ascending</label>
+            <legend class="filter-heading">Sort date:</legend>
+            <div class="filter-option-group">
+              <div class="filter-option-wrapper">
+                <input
+                  type="radio"
+                  id="date-asc"
+                  name="dateSort"
+                  class="filter-option"
+                  value="asc"
+                />
+                <label for="date-asc" class="label-filter-option"
+                  >Ascending</label
+                >
+              </div>
+              <div class="filter-option-wrapper">
+                <input
+                  type="radio"
+                  id="date-desc"
+                  name="dateSort"
+                  class="filter-option"
+                  value="desc"
+                  checked
+                />
+                <label for="date-desc" class="label-filter-option"
+                  >Descending</label
+                >
+              </div>
             </div>
-            <div class="filter-option-wrapper">
-              <input
-                type="radio"
-                id="date-desc"
-                name="dateSort"
-                class="filter-option"
-                value="desc"
-                checked
-              />
-              <label for="date-desc" class="label-filter-option">Descending</label>
+          </fieldset>
+          <fieldset class="filter-by-status">
+            <legend class="filter-heading">Game status:</legend>
+            <div class="filter-option-group">
+              <div class="filter-option-wrapper">
+                <input
+                  type="radio"
+                  id="all-games"
+                  name="gameStatus"
+                  class="filter-option"
+                  value="all"
+                  checked
+                />
+                <label for="all-games" class="label-filter-option">All</label>
+              </div>
+              <div class="filter-option-wrapper">
+                <input
+                  type="radio"
+                  id="upcoming-games"
+                  name="gameStatus"
+                  class="filter-option"
+                  value="upcoming"
+                />
+                <label for="upcoming-games" class="label-filter-option"
+                  >Upcoming</label
+                >
+              </div>
+              <div class="filter-option-wrapper">
+                <input
+                  type="radio"
+                  id="completed-games"
+                  name="gameStatus"
+                  class="filter-option"
+                  value="completed"
+                />
+                <label for="completed-games" class="label-filter-option"
+                  >Completed</label
+                >
+              </div>
             </div>
-          </div>
-        </fieldset>
-        <fieldset class="filter-by-status">
-          <legend class="filter-heading">Game status:</legend>
-          <div class="filter-option-group">
-            <div class="filter-option-wrapper">
-              <input
-                type="radio"
-                id="all-games"
-                name="gameStatus"
-                class="filter-option"
-                value="all"
-                checked
-              />
-              <label for="all-games" class="label-filter-option">All</label>
-            </div>
-            <div class="filter-option-wrapper">
-              <input
-                type="radio"
-                id="upcoming-games"
-                name="gameStatus"
-                class="filter-option"
-                value="upcoming"
-              />
-              <label for="upcoming-games" class="label-filter-option">Upcoming</label>
-            </div>
-            <div class="filter-option-wrapper">
-              <input
-                type="radio"
-                id="completed-games"
-                name="gameStatus"
-                class="filter-option"
-                value="completed"
-              />
-              <label for="completed-games" class="label-filter-option">Completed</label>
-            </div>
-          </div>
-        </fieldset>
+          </fieldset>
         </div>
         <button class="btn btn--filter" type="submit">Apply</button>
       </form>

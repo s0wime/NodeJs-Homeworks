@@ -7,10 +7,14 @@
     </button>
     <%} %>
     <div class="game-info">
-      <h3 class="game-teams">
-        <%= game.team1Name %> <% if (game.score1) { %> <%= game.score1 %> - <%=
-        game.score2 %> <% } else { %> VS <% } %> <%= game.team2Name %>
-      </h3>
+      <div class="game-details">
+        <div class="team team1"><%= game.team1Name %></div>
+        <div class="score">
+          <% if (game.score1) { %> <%= game.score1 %> - <%= game.score2 %> <% }
+          else { %> VS <% } %>
+        </div>
+        <div class="team team2"><%= game.team2Name %></div>
+      </div>
       <p class="game-date"><%= game.date %></p>
     </div>
     <% if (group === "admin") {%>
