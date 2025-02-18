@@ -61,36 +61,50 @@ class AdminRepository extends GuestRepository {
     const { updatedGame, updatedResult } = values;
 
     try {
-      await client.query("BEGIN");
-
+      console.log(updatedGame);
       if (updatedGame?.team1 && updatedGame?.team2) {
-        const queryUpdateGame = queryBuilder.updateGame(updatedGame);
-        await client.query(queryUpdateGame);
+        await prisma.games.update({
+          where: { id: updatedGame.id },
+          data: {
+            team1: { connect: { name: updatedGame.team1 } },
+            team2: { connect: { name: updatedGame.team2 } },
+            date: updatedGame.data,
+          },
+        });
       }
 
       if (updatedResult?.score1 && updatedResult?.score2) {
         await this.updateGameResult(updatedGame.id, updatedResult);
       }
 
-      await client.query("COMMIT");
       return true;
     } catch (error) {
-      await client.query("ROLLBACK");
       throw new Error(`Failed to update game: ${error.message}`);
     }
   }
 
   async updateGameResult(gameId, result) {
-    const { rows } = await client.query(
-      queryBuilder.checkIsResultExist(gameId)
-    );
+    const resultExist = await prisma.results.findUnique({
+      where: { gameId },
+    });
 
-    const query =
-      rows.length > 0
-        ? queryBuilder.updateResult(gameId, result)
-        : queryBuilder.addResult(gameId, result);
-
-    await client.query(query);
+    if (resultExist) {
+      await prisma.results.update({
+        where: { gameId },
+        data: {
+          score1: result.score1,
+          score2: result.score2,
+        },
+      });
+    } else {
+      await prisma.results.create({
+        data: {
+          gameId,
+          score1: result.score1,
+          score2: result.score2,
+        },
+      });
+    }
   }
 }
 
