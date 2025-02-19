@@ -13,13 +13,14 @@
   "license": "ISC",
   "author": "",
   "type": "commonjs",
-  "main": "Homework 5/src/index.js",
+  "main": "Homework 6/src/index.js",
   "scripts": {
     "hw1": "node './Homework 1/index.js'",
     "hw2": "nodemon './Homework 2/index.js'",
     "hw3": "nodemon './Homework 3/src/index.js'",
     "hw4": "nodemon './Homework 4/src/index.js'",
-    "hw5": "nodemon './Homework 5/src/index.js'"
+    "hw5": "nodemon './Homework 5/src/index.js'",
+    "hw6": "nodemon './Homework 6/src/index.js'"
   },
   "nodemonConfig": {
     "ignore": [
