@@ -96,7 +96,9 @@ elForm.addEventListener("submit", (e) => {
     },
   };
 
-  fetch("http://localhost:3000/admin/editGame/", options).then(() => {
-    window.location.href = "/admin/viewSchedule/";
-  });
+  fetch(`http://localhost:3000/admin/games/${data.gameId}/edit`, options).then(
+    () => {
+      window.location.href = "/admin/games/";
+    }
+  );
 });

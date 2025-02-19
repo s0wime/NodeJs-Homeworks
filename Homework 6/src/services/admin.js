@@ -94,11 +94,13 @@ class AdminService {
 
   addGame(req, res) {
     const { body } = req;
+    console.log(body.date);
     body.date = new Date(body.date).toISOString();
+    console.log(body.date);
     adminRepository
       .addGame(body)
       .then(() => {
-        res.redirect("viewSchedule/");
+        res.redirect("./");
       })
       .catch(() => {
         res.render("errorPage", { errMsg: "Server Error" });
@@ -107,14 +109,14 @@ class AdminService {
 
   async getEditingPage(req, res) {
     const {
-      query: { gameId },
+      params: { id },
     } = req;
 
-    if (!gameId) {
+    if (!id) {
       return res.render("errorPage", { errMsg: "Bad request" });
     }
 
-    const game = await adminRepository.getGameByID(parseInt(gameId));
+    const game = await adminRepository.getGameByID(parseInt(id));
     if (!game) {
       res.render("errorPage", { errMsg: "No game available" });
     }
@@ -169,10 +171,10 @@ class AdminService {
 
   deleteGame(req, res) {
     const {
-      params: { gameId },
+      params: { id },
     } = req;
 
-    const parsedGameId = parseInt(gameId);
+    const parsedGameId = parseInt(id);
 
     if (isNaN(parsedGameId)) {
       return res.render("errorPage", { errMsg: "There is no such game." });

@@ -42,8 +42,6 @@ class AdminRepository extends GuestRepository {
   async addGame(body) {
     const { team1Name, team2Name, date } = body;
 
-    console.log(team1Name, team2Name, date);
-
     if (team1Name === team2Name) {
       return;
     }
@@ -61,7 +59,6 @@ class AdminRepository extends GuestRepository {
     const { updatedGame, updatedResult } = values;
 
     try {
-      console.log(updatedGame);
       if (updatedGame?.team1 && updatedGame?.team2) {
         await prisma.games.update({
           where: { id: updatedGame.id },

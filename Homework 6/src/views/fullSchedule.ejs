@@ -14,7 +14,7 @@
             <ion-icon name="arrow-back-outline"></ion-icon>
           </a>
           <% if (group === "admin") {%>
-          <a href="/admin/addGame" class="btn btn--add-game">
+          <a href="/admin/games/add" class="btn btn--add-game">
             <ion-icon name="add-outline"></ion-icon>
           </a>
           <%} %>
@@ -22,7 +22,7 @@
             <ion-icon name="funnel-outline"></ion-icon>
           </button>
         </div>
-        <form action="/<%= group %>/viewSchedule/" class="form-game-finder">
+        <form action="/<%= group %>/games/" class="form-game-finder">
           <input
             type="text"
             name="teamName"
@@ -35,10 +35,7 @@
       </div>
     </header>
     <main>
-      <form
-        action="/<%= group %>/viewSchedule/"
-        class="form-game-filter hidden"
-      >
+      <form action="/<%= group %>/games/" class="form-game-filter hidden">
         <div class="filter-options">
           <fieldset class="filter-by-date">
             <legend class="filter-heading">Sort date:</legend>

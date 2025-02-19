@@ -3,14 +3,14 @@ const router = express.Router();
 const AdminServiceClass = require("../services/admin");
 const adminService = new AdminServiceClass();
 
-router.get("/viewSchedule/", adminService.getGames);
+router.get("/games", adminService.getGames);
 
-router.get("/addGame", adminService.getAddPage);
-router.post("/addGame", adminService.addGame);
+router.get("/games/add", adminService.getAddPage);
+router.post("/games/add", adminService.addGame);
 
-router.get("/editGame", adminService.getEditingPage);
-router.patch("/editGame", adminService.editGame);
+router.get("/games/:id/edit", adminService.getEditingPage);
+router.patch("/games/:id/edit", adminService.editGame);
 
-router.delete("/deleteGame/:gameId", adminService.deleteGame);
+router.delete("/games/:id/delete", adminService.deleteGame);
 
 module.exports = router;
