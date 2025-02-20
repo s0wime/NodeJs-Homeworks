@@ -126,19 +126,6 @@ btnPrevPage.addEventListener("click", (e) => {
   window.location.href = url.toString();
 });
 
-btnPrevPage.addEventListener("click", (e) => {
-  e.preventDefault();
-
-  if (!url.searchParams.has("page")) {
-    return;
-  } else if (parseInt(url.searchParams.get("page")) === 1) {
-    return;
-  }
-
-  url.searchParams.set("page", parseInt(url.searchParams.get("page")) - 1);
-  window.location.href = url.toString();
-});
-
 btnNextPage.addEventListener("click", (e) => {
   e.preventDefault();
 
