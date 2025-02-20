@@ -65,7 +65,7 @@ class AdminRepository extends GuestRepository {
           data: {
             team1: { connect: { name: updatedGame.team1 } },
             team2: { connect: { name: updatedGame.team2 } },
-            date: updatedGame.data,
+            date: updatedGame.date,
           },
         });
       }
