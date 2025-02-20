@@ -1,5 +1,4 @@
 const GuestRepository = require("./GuestRepository");
-const client = require("../../config/dbconfig");
 const prisma = require("../../config/dbconfig");
 
 class AdminRepository extends GuestRepository {
@@ -61,14 +60,13 @@ class AdminRepository extends GuestRepository {
     const { updatedGame, updatedResult } = values;
 
     try {
-      console.log(updatedGame);
       if (updatedGame?.team1 && updatedGame?.team2) {
         await prisma.games.update({
           where: { id: updatedGame.id },
           data: {
             team1: { connect: { name: updatedGame.team1 } },
             team2: { connect: { name: updatedGame.team2 } },
-            date: updatedGame.data,
+            date: updatedGame.date,
           },
         });
       }
