@@ -5,12 +5,15 @@ const dateHandler = new DateHandlerClass();
 
 class AdminService {
   async getGames(req, res) {
-    const { teamName, dateSort, gameStatus } = req.query;
+    const { teamName, dateSort, gameStatus, page } = req.query;
+    const parsedPage = parseInt(page);
 
     if (!teamName) {
       adminRepository
         .getGames()
         .then((schedule) => {
+          const totalPages = Math.trunc(schedule.length / 10);
+
           switch (dateSort) {
             case "desc":
               schedule.sort((a, b) => {
@@ -39,7 +42,11 @@ class AdminService {
               break;
           }
 
-          res.render("fullSchedule", { schedule, group: "admin" });
+          if (parsedPage) {
+            schedule = schedule.slice(parsedPage * 10 - 10, parsedPage * 10);
+          }
+
+          res.render("fullSchedule", { schedule, group: "admin", totalPages });
         })
         .catch(() => {
           res.render("errorPage", { errMsg: "Server Error" });

@@ -11,6 +11,10 @@ const optionCompletedGames = document.getElementById("completed-games");
 
 const inputGameFinder = document.querySelector(".game-finder");
 
+const btnsToPage = document.querySelectorAll(".btn--to-page");
+const btnPrevPage = document.querySelector(".btn--prev-page");
+const btnNextPage = document.querySelector(".btn--next-page");
+
 const url = new URL(window.location);
 
 function deleteGame(id) {
@@ -90,6 +94,62 @@ elFormSearch.addEventListener("submit", (e) => {
     url.searchParams.append("teamName", teamName);
   } else {
     url.searchParams.set("teamName", teamName);
+  }
+
+  window.location.href = url.toString();
+});
+
+btnsToPage.forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    if (!url.searchParams.has("page")) {
+      url.searchParams.append("page", btn.textContent);
+    } else {
+      url.searchParams.set("page", btn.textContent);
+    }
+
+    window.location.href = url.toString();
+  });
+});
+
+btnPrevPage.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  if (!url.searchParams.has("page")) {
+    return;
+  } else if (parseInt(url.searchParams.get("page")) === 1) {
+    return;
+  }
+
+  url.searchParams.set("page", parseInt(url.searchParams.get("page")) - 1);
+  window.location.href = url.toString();
+});
+
+btnPrevPage.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  if (!url.searchParams.has("page")) {
+    return;
+  } else if (parseInt(url.searchParams.get("page")) === 1) {
+    return;
+  }
+
+  url.searchParams.set("page", parseInt(url.searchParams.get("page")) - 1);
+  window.location.href = url.toString();
+});
+
+btnNextPage.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  if (parseInt(url.searchParams.get("page")) >= totalPages) {
+    return;
+  }
+
+  if (!url.searchParams.has("page")) {
+    url.searchParams.append("page", 2);
+  } else {
+    url.searchParams.set("page", parseInt(url.searchParams.get("page")) + 1);
   }
 
   window.location.href = url.toString();
