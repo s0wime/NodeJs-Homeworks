@@ -1,5 +1,7 @@
 const AdminRepositoryClass = require("../repository/AdminRepository");
+const DateHandlerClass = require("../utils/DateHandler");
 const adminRepository = new AdminRepositoryClass();
+const dateHandler = new DateHandlerClass();
 
 class AdminService {
   async getGames(req, res) {
@@ -94,7 +96,7 @@ class AdminService {
 
   addGame(req, res) {
     const { body } = req;
-    body.date = new Date(body.date).toISOString();
+    body.date = dateHandler.dateStringWithoutTimezone(body.date);
     adminRepository
       .addGame(body)
       .then(() => {
@@ -147,7 +149,8 @@ class AdminService {
     }
 
     if (date) {
-      updatedGame.date = date;
+      updatedGame.date = dateHandler.dateStringWithoutTimezone(date);
+      console.log(updatedGame.date);
     }
 
     if (!isNaN(team1Score) && !isNaN(team2Score)) {

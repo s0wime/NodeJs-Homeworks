@@ -43,6 +43,12 @@ function initDate() {
   dateInput.value = game.date;
 }
 
+function dateStringWithoutTimezone(date) {
+  console.log(date);
+  const tzoffset = date.getTimezoneOffset() * 60000;
+  return new Date(date.valueOf() - tzoffset).toISOString();
+}
+
 elSelectTeam1.addEventListener("change", () => {
   fillSelect(elSelectTeam2, elSelectTeam1.value);
 });
@@ -56,7 +62,7 @@ const yearsLater = new Date();
 yearsLater.setFullYear(now.getFullYear() + 3);
 
 function convertDateToString(date) {
-  return date.toISOString().slice(0, 16);
+  return dateStringWithoutTimezone(date).slice(0, 16);
 }
 
 dateInput.min = convertDateToString(now);
