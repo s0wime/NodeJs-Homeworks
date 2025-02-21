@@ -12,7 +12,7 @@ class AdminService {
       adminRepository
         .getGames()
         .then((schedule) => {
-          const totalPages = Math.trunc(schedule.length / 10);
+          const totalPages = Math.ceil(schedule.length / 10);
 
           switch (dateSort) {
             case "desc":
