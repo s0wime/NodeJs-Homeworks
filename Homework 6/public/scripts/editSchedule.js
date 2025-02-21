@@ -11,7 +11,8 @@ const optionCompletedGames = document.getElementById("completed-games");
 
 const inputGameFinder = document.querySelector(".game-finder");
 
-const btnsToPage = document.querySelectorAll(".btn--to-page");
+const paginationList = document.querySelector(".pagination-list");
+let btnsToPage = document.querySelectorAll(".btn--to-page");
 const btnPrevPage = document.querySelector(".btn--prev-page");
 const btnNextPage = document.querySelector(".btn--next-page");
 
@@ -49,7 +50,61 @@ function fillFilterOptions() {
   }
 }
 
+function buildLimits(currentPage) {
+  const builtLimits = [];
+
+  switch (currentPage) {
+    case 1:
+      builtLimits[0] = currentPage;
+      break;
+    case 2:
+      builtLimits[0] = currentPage - 1;
+      break;
+    default:
+      builtLimits[0] = currentPage - 2;
+      break;
+  }
+
+  switch (totalPages) {
+    case currentPage:
+      builtLimits[1] = totalPages;
+      break;
+    case currentPage + 1:
+      builtLimits[1] = totalPages;
+      break;
+    case currentPage + 2:
+      builtLimits[1] = totalPages;
+      break;
+    default:
+      builtLimits[1] = currentPage + 2;
+      break;
+  }
+
+  return builtLimits;
+}
+
+function fixPagination() {
+  if (!url.searchParams.has("page")) {
+    url.searchParams.append("page", 1);
+  }
+
+  const currentPage = parseInt(url.searchParams.get("page"));
+
+  const limits = buildLimits(currentPage);
+
+  paginationList.innerHTML = "";
+
+  for (let i = limits[0]; i <= limits[1]; i++) {
+    paginationList.innerHTML += `<li class="page-number">
+      <a class="btn--to-page" href="">${i}</a>
+    </li>`;
+  }
+
+  btnsToPage = document.querySelectorAll(".btn--to-page");
+}
+
 fillFilterOptions();
+fixPagination();
 
 btnFilter.addEventListener("click", () => {
   elFormFilter.classList.toggle("hidden");

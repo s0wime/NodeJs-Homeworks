@@ -112,25 +112,21 @@
       </form>
       <%- include('schedule'); -%>
       <div class="pagination">
-        <ul>
-          <% if (totalPages > 1) { %>
-          <li class="page-switch">
-            <a href="" class="btn--prev-page"
-              ><ion-icon name="arrow-back-outline"></ion-icon
-            ></a>
-          </li>
+        <% if (totalPages > 1) { %>
+        <a href="" class="btn--prev-page"
+          ><ion-icon name="arrow-back-outline"></ion-icon
+        ></a>
+        <ul class="pagination-list">
           <% for(let i = 0; i < totalPages; i++) { %>
           <li class="page-number">
             <a class="btn--to-page" href=""><%= i + 1 %></a>
           </li>
           <% }; %>
-          <li class="page-switch">
-            <a href="" class="btn--next-page"
-              ><ion-icon name="arrow-forward-outline"></ion-icon
-            ></a>
-          </li>
-          <% } %>
         </ul>
+        <a href="" class="btn--next-page"
+          ><ion-icon name="arrow-forward-outline"></ion-icon
+        ></a>
+        <% } %>
       </div>
     </main>
     <footer>
