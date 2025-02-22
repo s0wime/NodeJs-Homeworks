@@ -3,12 +3,15 @@ const guestRepository = new GuestRepositoryClass();
 
 class GuestService {
   async getGames(req, res) {
-    const { teamName, dateSort, gameStatus } = req.query;
+    const { teamName, dateSort, gameStatus, page } = req.query;
+    const parsedPage = parseInt(page);
 
     if (!teamName) {
       guestRepository
         .getGames()
         .then((schedule) => {
+          const totalPages = Math.ceil(schedule.length / 10);
+
           switch (dateSort) {
             case "desc":
               schedule.sort((a, b) => {
@@ -37,7 +40,11 @@ class GuestService {
               break;
           }
 
-          res.render("fullSchedule", { schedule, group: "guest" });
+          if (parsedPage) {
+            schedule = schedule.slice(parsedPage * 10 - 10, parsedPage * 10);
+          }
+
+          res.render("fullSchedule", { schedule, group: "guest", totalPages });
         })
         .catch(() => {
           res.render("errorPage", { errMsg: "Server Error" });
