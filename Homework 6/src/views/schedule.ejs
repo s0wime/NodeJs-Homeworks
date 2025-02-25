@@ -18,7 +18,7 @@
       <p class="game-date"><%= game.date %></p>
     </div>
     <% if (group === "admin") {%>
-    <a class="btn btn--edit-game" href="/admin/editGame/?gameId=<%= game.id %>">
+    <a class="btn btn--edit-game" href="/admin/games/<%= game.id %>/edit/">
       <ion-icon name="create-outline"></ion-icon>
     </a>
     <%} %>

@@ -1,7 +1,6 @@
 const elSelectTeam1 = document.getElementById("team1");
 const elSelectTeam2 = document.getElementById("team2");
 const dateInput = document.getElementById("date");
-// const YEARS_LIMIT = 3;
 
 function fillSelect(select, exclude = null) {
   const currentOption = select.value;

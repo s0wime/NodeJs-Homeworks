@@ -1,4 +1,5 @@
 const GuestRepository = require("./GuestRepository");
+const client = require("../../config/dbconfig");
 const prisma = require("../../config/dbconfig");
 
 class AdminRepository extends GuestRepository {
@@ -40,8 +41,6 @@ class AdminRepository extends GuestRepository {
 
   async addGame(body) {
     const { team1Name, team2Name, date } = body;
-
-    console.log(team1Name, team2Name, date);
 
     if (team1Name === team2Name) {
       return;

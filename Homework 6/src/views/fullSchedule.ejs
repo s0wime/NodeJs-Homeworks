@@ -14,7 +14,7 @@
             <ion-icon name="arrow-back-outline"></ion-icon>
           </a>
           <% if (group === "admin") {%>
-          <a href="/admin/addGame" class="btn btn--add-game">
+          <a href="/admin/games/add" class="btn btn--add-game">
             <ion-icon name="add-outline"></ion-icon>
           </a>
           <%} %>
@@ -22,7 +22,7 @@
             <ion-icon name="funnel-outline"></ion-icon>
           </button>
         </div>
-        <form action="/<%= group %>/viewSchedule/" class="form-game-finder">
+        <form action="/<%= group %>/games/" class="form-game-finder">
           <input
             type="text"
             name="teamName"
@@ -35,10 +35,7 @@
       </div>
     </header>
     <main>
-      <form
-        action="/<%= group %>/viewSchedule/"
-        class="form-game-filter hidden"
-      >
+      <form action="/<%= group %>/games/" class="form-game-filter hidden">
         <div class="filter-options">
           <fieldset class="filter-by-date">
             <legend class="filter-heading">Sort date:</legend>
@@ -114,6 +111,23 @@
         <button class="btn btn--filter" type="submit">Apply</button>
       </form>
       <%- include('schedule'); -%>
+      <div class="pagination">
+        <% if (totalPages > 1) { %>
+        <a href="" class="btn--prev-page"
+          ><ion-icon name="arrow-back-outline"></ion-icon
+        ></a>
+        <ul class="pagination-list">
+          <% for(let i = 0; i < totalPages; i++) { %>
+          <li class="page-number">
+            <a class="btn--to-page" href=""><%= i + 1 %></a>
+          </li>
+          <% }; %>
+        </ul>
+        <a href="" class="btn--next-page"
+          ><ion-icon name="arrow-forward-outline"></ion-icon
+        ></a>
+        <% } %>
+      </div>
     </main>
     <footer>
       <p>
@@ -122,6 +136,7 @@
     </footer>
     <script>
       window.group = <%- JSON.stringify(group) %>;
+      window.totalPages = <%- JSON.stringify(totalPages) %>
     </script>
     <script src="/scripts/editSchedule.js"></script>
     <script
