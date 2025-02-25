@@ -3,7 +3,8 @@ const guestRepository = new GuestRepositoryClass();
 
 class GuestService {
   async getGames(req, res) {
-    const { teamName, dateSort, gameStatus } = req.query;
+    const { teamName, dateSort, gameStatus, page } = req.query;
+    const parsedPage = parseInt(page);
 
     if (!teamName) {
       guestRepository
@@ -37,7 +38,15 @@ class GuestService {
               break;
           }
 
-          res.render("fullSchedule", { schedule, group: "guest" });
+          const totalPages = Math.ceil(schedule.length / 10);
+
+          if (parsedPage) {
+            schedule = schedule.slice(parsedPage * 10 - 10, parsedPage * 10);
+          } else {
+            schedule = schedule.slice(0, 10);
+          }
+
+          res.render("fullSchedule", { schedule, group: "guest", totalPages });
         })
         .catch(() => {
           res.render("errorPage", { errMsg: "Server Error" });

@@ -94,7 +94,7 @@ header {
 main {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 2.5rem;
   max-width: 1200px;
   margin: 2rem auto;
   padding: 0 1rem;
@@ -258,12 +258,60 @@ fieldset {
   background-color: #37b24d;
 }
 
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.pagination-list {
+  display: flex;
+  list-style: none;
+  gap: 0.5rem;
+  padding: 0;
+}
+
+.page-number {
+  display: flex
+}
+
+.page-number a, .btn--prev-page, .btn--next-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-color);
+  border: none;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-radius: 0.5rem;
+  text-decoration: none;
+}
+
+.page-number a {
+  background-color: var(--main-color);
+}
+
+.btn--prev-page, .btn--next-page {
+  border: 1px solid var(--border-color);
+}
+
+.page-number a:hover {
+  background-color: #f0a986;
+}
+
+.btn--prev-page:hover, .btn--next-page:hover {
+  background-color: rgb(227, 231, 231);
+}
+
 footer {
   background-color: var(--secondary-color);
   padding: 2rem;
   text-align: center;
   border-top: 1px solid var(--border-color);
-  margin-top: 4rem;
+  margin-top: 0.5rem;
 }
 
 footer p {

@@ -111,6 +111,23 @@
         <button class="btn btn--filter" type="submit">Apply</button>
       </form>
       <%- include('schedule'); -%>
+      <div class="pagination">
+        <% if (totalPages > 1) { %>
+        <a href="" class="btn--prev-page"
+          ><ion-icon name="arrow-back-outline"></ion-icon
+        ></a>
+        <ul class="pagination-list">
+          <% for(let i = 0; i < totalPages; i++) { %>
+          <li class="page-number">
+            <a class="btn--to-page" href=""><%= i + 1 %></a>
+          </li>
+          <% }; %>
+        </ul>
+        <a href="" class="btn--next-page"
+          ><ion-icon name="arrow-forward-outline"></ion-icon
+        ></a>
+        <% } %>
+      </div>
     </main>
     <footer>
       <p>
@@ -119,6 +136,7 @@
     </footer>
     <script>
       window.group = <%- JSON.stringify(group) %>;
+      window.totalPages = <%- JSON.stringify(totalPages) %>
     </script>
     <script src="/scripts/editSchedule.js"></script>
     <script
