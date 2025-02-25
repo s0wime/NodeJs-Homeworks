@@ -1,0 +1,379 @@
+:root {
+  --main-color: #ffbb98;
+  --secondary-color: #fbe0c3;
+  --background-color: #f8f9fa;
+  --text-color: #344648;
+  --text-secondary-color: #252b2c;
+  --border-color: #7d8e95;
+  --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header {
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.header-tools {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  gap: 1rem;
+}
+
+.header-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.form-game-finder {
+  display: flex;
+  flex: 1;
+  gap: 1rem;
+}
+
+.game-finder {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+  background-color: white;
+}
+
+.game-finder:focus {
+  outline: none;
+  border-color: var(--main-color);
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--main-color);
+  color: var(--text-color);
+  border: none;
+  padding: 1rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-radius: 0.5rem;
+}
+
+.btn ion-icon {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.btn:hover {
+  background-color: #f0a986;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  justify-content: flex-start;
+  align-items: center;
+  flex: 1;
+}
+
+.form-game-filter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--background-color);
+  padding: 1rem;
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow);
+  border: 2px solid var(--border-color);
+  text-align: center;
+  height: fit-content;
+  width: fit-content;
+}
+
+.filter-options {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  padding: 0 1rem;
+}
+
+.filter-heading {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.filter-option-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.filter-option-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filter-option {
+  width: 1.25rem;
+  height: 1.25rem;
+  accent-color: var(--main-color);
+  cursor: pointer;
+}
+
+.label-filter-option {
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+fieldset {
+  border: none;
+  margin-bottom: 1.5rem;
+  margin-top: 1rem;
+}
+
+.btn--filter {
+  width: 5rem;
+  justify-content: center;
+  padding: 0.75rem 1rem;
+}
+
+.schedule {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.game {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease;
+  border: 1px solid var(--border-color);
+  text-align: center;
+  width: 600px;
+}
+
+.game:hover {
+  transform: translateY(-2px);
+  border-color: var(--main-color);
+}
+
+.game-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.game-details {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+}
+
+.team {
+  flex: 1;
+  font-size: 1.15rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.team1 {
+  text-align: right;
+}
+
+.team2 {
+  text-align: left;
+}
+
+.score {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-secondary-color);
+  background-color: rgba(243, 243, 243, 0.9);
+  border: 1px solid #b8b7b7;
+  border-radius: 0.75rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.game-date {
+  font-size: 0.875rem;
+  color: var(--border-color);
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+
+.btn--delete-game {
+  background-color: #ff6b6b;
+}
+
+.btn--delete-game:hover {
+  background-color: #fa5252;
+}
+
+.btn--add-game {
+  background-color: #51cf66;
+}
+
+.btn--add-game:hover {
+  background-color: #37b24d;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.pagination-list {
+  display: flex;
+  list-style: none;
+  gap: 0.5rem;
+  padding: 0;
+}
+
+.page-number {
+  display: flex
+}
+
+.page-number a, .btn--prev-page, .btn--next-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-color);
+  border: none;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-radius: 0.5rem;
+  text-decoration: none;
+}
+
+.page-number a {
+  background-color: var(--main-color);
+}
+
+.btn--prev-page, .btn--next-page {
+  border: 1px solid var(--border-color);
+}
+
+.page-number a:hover {
+  background-color: #f0a986;
+}
+
+.btn--prev-page:hover, .btn--next-page:hover {
+  background-color: rgb(227, 231, 231);
+}
+
+footer {
+  background-color: var(--secondary-color);
+  padding: 2rem;
+  text-align: center;
+  border-top: 1px solid var(--border-color);
+  margin-top: 0.5rem;
+}
+
+footer p {
+  font-size: 0.875rem;
+  color: var(--text-color);
+}
+
+@media (max-width: 640px) {
+  main {
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .header-tools {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .header-buttons {
+    width: 100%;
+  }
+
+  .header-buttons .btn {
+    width: 100%;
+  }
+
+  .form-game-finder {
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .game-finder {
+    font-size: 1.1rem;
+  }
+
+  .btn--search {
+    width: 7rem;
+  }
+
+  .filter-by-date, .filter-by-status {
+    flex: 1;
+    min-width: 45%;
+  }
+
+  .game {
+    padding: 1rem;
+    width: 90vw;
+  }
+
+  .game-details {
+    gap: 0.5rem;
+  }
+
+  .team {
+    font-size: 1rem;
+  }
+
+  .score {
+    font-size: 1rem;
+  }
+
+  .game-date {
+    font-size: 0.75rem;
+  }
+}

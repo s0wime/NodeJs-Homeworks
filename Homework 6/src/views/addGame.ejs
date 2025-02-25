@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Game adding</title>
+    <link rel="stylesheet" href="/styles/addGameStyle.css" />
+  </head>
+  <body>
+    <div class="modal">
+      <form action="/admin/games/add" method="post">
+        <div class="teams-container">
+          <div class="team-select">
+            <label for="team1">Team 1</label>
+            <select id="team1" name="team1Name"></select>
+          </div>
+          <div class="vs">VS</div>
+          <div class="team-select">
+            <label for="team2">Team 2</label>
+            <select id="team2" name="team2Name"></select>
+          </div>
+        </div>
+        <label for="date">Date</label>
+        <input type="datetime-local" id="date" name="date" required />
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+    <script>
+      window.teams = <%- JSON.stringify(teams) %>;
+    </script>
+    <script src="/scripts/addGame.js"></script>
+  </body>
+</html>
