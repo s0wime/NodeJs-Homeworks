@@ -103,8 +103,12 @@ function fixPagination() {
   btnsToPage = document.querySelectorAll(".btn--to-page");
 }
 
+if (totalPages > 1) {
+  fillFilterOptions();
+  fixPagination();
+}
+
 fillFilterOptions();
-fixPagination();
 
 btnFilter.addEventListener("click", () => {
   elFormFilter.classList.toggle("hidden");

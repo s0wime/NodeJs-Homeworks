@@ -10,8 +10,6 @@ class GuestService {
       guestRepository
         .getGames()
         .then((schedule) => {
-          const totalPages = Math.ceil(schedule.length / 10);
-
           switch (dateSort) {
             case "desc":
               schedule.sort((a, b) => {
@@ -39,6 +37,8 @@ class GuestService {
               ];
               break;
           }
+
+          const totalPages = Math.ceil(schedule.length / 10);
 
           if (parsedPage) {
             schedule = schedule.slice(parsedPage * 10 - 10, parsedPage * 10);
