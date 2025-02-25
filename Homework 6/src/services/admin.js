@@ -44,6 +44,8 @@ class AdminService {
 
           if (parsedPage) {
             schedule = schedule.slice(parsedPage * 10 - 10, parsedPage * 10);
+          } else {
+            schedule = schedule.slice(0, 10);
           }
 
           res.render("fullSchedule", { schedule, group: "admin", totalPages });
